@@ -31,10 +31,6 @@ io.on('connection', (socket) => {
         // socket.emit('setvalve', 'on')
         // setTimeout(() => socket.emit('setvalve', 'off'), 3000)
     })
-    socket.on('bonjour', (data) => {
-        console.log('bonjour: ', data)
-        socket.emit('salut')
-    })
 });
 
 

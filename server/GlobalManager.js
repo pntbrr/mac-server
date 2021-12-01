@@ -4,7 +4,7 @@ class GlobalManager {
     feetAnimationSocket
     solarAnimationSocket
     ledsSocket
-    isMoving = false
+    isMoving = 0
 
     constructor() {
 
@@ -15,19 +15,24 @@ class GlobalManager {
         switch (name) {
             case "iPhone":
                 this.iPhoneSocket = socket
+                this.iPhoneSocket.on('disconnect', () => console.log('iPhone Disconnected'))
                 this.setUpIphone()
                 break;
             case "valve":
                 this.valveSocket = socket
+                this.valveSocket.on('disconnect', () => console.log('Valve Disconnected'))
                 break;
             case "feetAnimation":
                 this.feetAnimationSocket = socket
+                this.feetAnimationSocket.on('disconnect', () => console.log('feetAnimation Disconnected'))
                 break;
             case "solarAnimation":
                 this.solarAnimationSocket = socket
+                this.solarAnimationSocket.on('disconnect', () => console.log('solarAnimation Disconnected'))
                 break;
             case "leds":
                 this.ledsSocket = socket
+                this.ledsSocket.on('disconnect', () => console.log('leds Disconnected'))
                 break;
             default:
                 break;
@@ -37,7 +42,8 @@ class GlobalManager {
     setUpIphone() {
         this.iPhoneSocket.on('winemaker', (isMoving) => {
             this.isMoving = isMoving
-            this.valveSocket.emit('setvalve', this.isMoving ? "on" : "off")
+            this.valveSocket?.emit('setvalve', this.isMoving ? "on" : "off")
+            this.feetAnimationSocket?.emit('setAnimSpeed', this.isMoving)
         })
     }
 

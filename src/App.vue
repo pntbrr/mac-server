@@ -10,8 +10,10 @@ const {animSpeed: speed} = useAnimSpeed()
 const tweenedSpeed = ref(0)
 const realSpeed = computed(() => tweenedSpeed.value.toFixed(2))
 
-watch(speed, (newVal) => {
-  gsap.to(tweenedSpeed, { duration: 0.5, value: newVal });
+watch(speed, (newVal, oldVal) => {
+  let duration = 0.5
+  if (newVal > oldVal) duration = 4
+  gsap.to(tweenedSpeed, { duration, value: newVal });
 })
 </script>
 
