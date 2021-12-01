@@ -6,7 +6,8 @@ const socket = io("http://192.168.2.1:3000")
 const animSpeed = ref(0)
 
 socket.on('connect', () => {
-    socket.emit('hello', { device: 'animation' })
+    socket.emit('hello', { device: 'feetAnimation' })
+
     socket.on('setAnimSpeed', (val) => {
         animSpeed.value = val
     })
