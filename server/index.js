@@ -3,7 +3,7 @@ const app = express();
 const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
-const GlobalManager = require('./GlobalManager')
+const createManager = require('./app/manager')
 
 const io = new Server(server, {
     allowEIO3: true,
@@ -16,12 +16,12 @@ app.get('/', (req, res) => {
     res.end('bonjou')
 });
 
-const manager = new GlobalManager()
+const manager = createManager()
 
 io.on('connection', (socket) => {
     socket.on('hello', ({device}) => {
         console.log('a device connected, named', device)
-        manager.hello(device, socket)
+        manager.connectDevice(device, socket)
         // if (device === 'animation') {
         //     console.log('animation connected')
         //     setTimeout(() => {
