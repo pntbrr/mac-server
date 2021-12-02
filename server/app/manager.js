@@ -24,9 +24,10 @@ function createManager () {
      */
     function setUpValve (socket) {
         valveSocket = socket
-        watch(isMoving, () => {
+        const unwatch = watch(isMoving, () => {
             socket.emit('setvalve', isMoving.value ? "on" : "off")
         })
+        socket.on('disconnect', unwatch)
     }
 
     /**
@@ -34,9 +35,14 @@ function createManager () {
      */
     function setUpFeetAnimation(socket) {
         feetAnimationSocket = socket
-        watch(isMoving, () => {
-            socket.emit('setAnimSpeed', isMoving.value)
+        const updateState = () => socket.emit('setAnimSpeed', isMoving.value)
+
+        updateState()
+        const unwatch = watch(isMoving, () => {
+            updateState()
         })
+
+        socket.on('disconnect', unwatch)
     }
 
 

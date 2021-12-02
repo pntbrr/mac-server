@@ -8,12 +8,15 @@ import useAnimSpeed from './composables/useAnimSpeed'
 
 const {animSpeed: speed} = useAnimSpeed()
 const tweenedSpeed = ref(0)
-const realSpeed = computed(() => tweenedSpeed.value.toFixed(2))
+const realSpeed = computed(() => +tweenedSpeed.value.toFixed(2))
 
+let prevAnim
 watch(speed, (newVal, oldVal) => {
   let duration = 0.5
-  if (newVal > oldVal) duration = 4
-  gsap.to(tweenedSpeed, { duration, value: newVal });
+  if (newVal > oldVal) duration = 2
+
+  if (prevAnim) prevAnim.kill()
+  prevAnim = gsap.to(tweenedSpeed, { duration, value: newVal });
 })
 </script>
 
@@ -25,7 +28,6 @@ watch(speed, (newVal, oldVal) => {
       :auto-play="true"
       :loop="true"
       :speed="realSpeed"
-      @AnimControl="setBossAnimController"
   />
 </template>
 

@@ -43,9 +43,12 @@ const ref = value => {
  */
 const watch = (ref, callback) => {
     ref.on('change', callback)
+    return () => {
+        ref.off('change', callback)
+    }
 }
 
 module.exports = {
     ref,
-    watch
+    watch,
 }
