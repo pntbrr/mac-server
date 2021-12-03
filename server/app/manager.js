@@ -1,9 +1,10 @@
 /**
  * Closure Land !
  */
-
+const { EventEmitter } = require('events')
 const { Socket } = require('socket.io')
 const {ref, watch} = require('../lib/reactive')
+
 
 function createManager () {
     // let iPhoneSocket
@@ -11,6 +12,8 @@ function createManager () {
     // let feetAnimationSocket
     // let solarAnimationSocket
     // let ledsSocket
+    const stepEvents = new EventEmitter()
+
     const isMoving = ref(0)
 
     /**
