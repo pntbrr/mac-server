@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const history = require('connect-history-api-fallback');
 const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
@@ -12,9 +13,18 @@ const io = new Server(server, {
     },
 });
 
-app.get('/', (req, res) => {
-    res.end('bonjou')
-});
+const staticFileMiddleware = express.static('dist');
+// 1st call for unredirected requests
+app.use(staticFileMiddleware);
+
+// Support history api
+// this is the HTTP request path not the path on disk
+app.use(history({
+    index: '/index.html'
+}));
+
+// 2nd call for redirected requests
+app.use(staticFileMiddleware);
 
 const manager = createManager()
 
