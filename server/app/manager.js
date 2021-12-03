@@ -138,6 +138,10 @@ function createManager () {
         })
 
         socket.on('disconnect', unwatch)
+
+        const playSundialAnin = duration => {
+            socket.emit('playSundialAnim', duration)
+        }
     }
 
 
