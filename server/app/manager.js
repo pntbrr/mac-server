@@ -1,19 +1,22 @@
+/**
+ * Closure Land !
+ */
+
 const { Socket } = require('socket.io')
 const {ref, watch} = require('../lib/reactive')
 
 function createManager () {
-    let iPhoneSocket
-    let valveSocket
-    let feetAnimationSocket
-    let solarAnimationSocket
-    let ledsSocket
+    // let iPhoneSocket
+    // let valveSocket
+    // let feetAnimationSocket
+    // let solarAnimationSocket
+    // let ledsSocket
     const isMoving = ref(0)
 
     /**
      * @param {Socket} socket
      */
     function setUpIphone(socket) {
-        iPhoneSocket = socket
         socket.on('winemaker', (movingVal) => {
             isMoving.value = movingVal
         })
@@ -23,7 +26,6 @@ function createManager () {
      * @param {Socket} socket
      */
     function setUpValve (socket) {
-        valveSocket = socket
         const unwatch = watch(isMoving, () => {
             socket.emit('setvalve', isMoving.value ? "on" : "off")
         })
@@ -33,16 +35,21 @@ function createManager () {
     /**
      * @param {Socket} socket
      */
-    function setUpFeetAnimation(socket) {
-        feetAnimationSocket = socket
-        const updateState = () => socket.emit('setAnimSpeed', isMoving.value)
-
-        updateState()
+    function setUpAnimation(socket) {
+        const updateMovingState = () => socket.emit('setFeetAnimSpeed', isMoving.value)
+        updateMovingState()
         const unwatch = watch(isMoving, () => {
-            updateState()
+            updateMovingState()
         })
-
         socket.on('disconnect', unwatch)
+
+        const playSundialAnin = duration => {
+            socket.emit('playSundialAnim', duration)
+        }
+
+        setTimeout(() => {
+            playSundialAnin(12)
+        }, 1000)
     }
 
 
@@ -62,8 +69,8 @@ function createManager () {
             case "valve":
                 setUpValve(socket)
                 break;
-            case "feetAnimation":
-                setUpFeetAnimation(socket)
+            case "animation":
+                setUpAnimation(socket)
                 break;
             case "solarAnimation":
                 solarAnimationSocket = socket
