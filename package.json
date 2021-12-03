@@ -6,7 +6,7 @@
     "build": "vite build",
     "serve": "vite preview",
     "start": "node server/",
-    "dev:server": "nodemon server/"
+    "server": "nodemon server/"
   },
   "dependencies": {
     "axios": "^0.24.0",

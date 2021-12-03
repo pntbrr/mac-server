@@ -17,6 +17,14 @@ function createManager () {
         socket.on('winemaker', (movingVal) => {
             isMoving.value = movingVal
         })
+        socket.on('leds', () => {
+            console.log('let the leds grow')
+            socket.emit('grow')
+        })
+        socket.on('ledsGrew', () => {
+            console.log('let the leds take a bathsun')
+            socket.emit('solar', 8)
+        })
     }
 
     /**
