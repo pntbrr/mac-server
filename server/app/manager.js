@@ -1,151 +1,23 @@
-import { EventEmitter } from 'events'
 import { Socket } from 'socket.io'
-import { ref, watch, get } from '../lib/reactive.js'
-
 import readline from 'readline'
 import chalk from 'chalk'
+import StepsManager from './StepsManager.js'
+
+import state from './state.js'
+
+import setUpDrone from './parts/drone.js'
+import setUpValve from './parts/valve.js'
+import setUpSpheros from './parts/spheros.js'
+import setUpAnimation from './parts/animation.js'
 
 readline.emitKeypressEvents(process.stdin);
 process.stdin.setRawMode(true)
 const log = console.log
 
 export default function createManager () {
-    let valveSocket
-    let animationSocket
-    let ledsSocket
 
     // Steps
-    const steps = [
-      "idle",
-      "pickup",
-      "sun rises",
-      "sun bath",
-      "get on",
-      "press",
-      "shake",
-      "pour water",
-      "re-shake"
-    ]
-    let currentStepIndex = 0
-    const stepsEvents = new EventEmitter()
-    function goToStep(step) {
-        const stepIndex = steps.indexOf(step)
-        if (stepIndex === -1) return false
-
-        currentStepIndex = stepIndex
-        updateStep()
-    }
-
-    // States
-    const state = {
-        sunBath: {
-            animationDuration: ref(0)
-        },
-        press: {
-            isMoving: ref(false)
-        },
-    }
-
-    function nextStep () {
-        if (currentStepIndex >= steps.length - 1) return
-        currentStepIndex++
-        updateStep()
-    }
-    function prevStep () {
-        if (currentStepIndex <= 0) return
-        currentStepIndex--
-        updateStep()
-    }
-
-    function updateStep() {
-        log(chalk.green(`[STEPS] Moving to step "${steps[currentStepIndex]}"`))
-        stepsEvents.emit(steps[currentStepIndex])
-    }
-
-    /**
-     * @param {Socket} socket
-     */
-    function setupSpheros(socket) {
-
-        stepsEvents.on("pickup", () => {
-            socket.emit("grow")
-        })
-        socket.on("grape picked", () => {
-            console.log("grape pick detected")
-        })
-
-        stepsEvents.on("sun bath", () => {
-            socket.emit("solar", 8)
-        })
-
-        stepsEvents.on("get on", () => {
-            // socket.emit("", () => {
-            //
-            // }
-        })
-
-        stepsEvents.on("press", () => {
-
-        })
-        socket.on('winemaker', (movingVal) => {
-            state.press.isMoving.value = movingVal
-        })
-    }
-    /**
-     * @param {Socket} socket
-     */
-    function setUpDrone (socket) {
-        stepsEvents.on("sun rises", () => {
-            socket.emit("rise")
-        })
-        socket.on("start arc", (duration) => {
-            state.sunBath.animationDuration.value = duration
-            goToStep('sun bath')
-        })
-    }
-
-    /**
-     * @param {Socket} socket
-     */
-    function setUpValve (socket) {
-        valveSocket = socket
-        const unwatch = watch(state.press.isMoving, () => {
-            socket.emit('setvalve', get(state.press.isMoving) ? "on" : "off")
-        })
-        socket.on('disconnect', unwatch)
-    }
-
-    /**
-     * @param {Socket} socket
-     */
-    function setUpAnimation(socket) {
-        animationSocket = socket
-        const updateState = () => socket.emit('setAnimSpeed', get(state.press.isMoving))
-
-        stepsEvents.on("sun bath", () => {
-            // socket.emit("", () => {
-            //
-            // })
-        })
-
-        stepsEvents.on("", () => {
-            // socket.emit("", () => {
-            //
-            // })
-        })
-
-        updateState()
-        const unwatch = watch(state.press.isMoving, () => {
-            updateState()
-        })
-
-        socket.on('disconnect', unwatch)
-
-        const playSundialAnin = duration => {
-            socket.emit('playSundialAnim', duration)
-        }
-    }
-
+    const stepsManager = new StepsManager()
 
     /**
      * Connect a socket
@@ -159,19 +31,19 @@ export default function createManager () {
         })
         switch (name) {
             case "iPhone":
-                setupSpheros(socket)
+                setUpSpheros(socket, stepsManager, state)
                 break;
             case "drone":
-                setUpDrone(socket)
+                setUpDrone(socket, stepsManager, state)
                 break;
             case "valve":
-                setUpValve(socket)
+                setUpValve(socket, stepsManager, state)
                 break;
             case "animation":
-                setUpAnimation(socket)
+                setUpAnimation(socket, stepsManager, state)
                 break;
             case "leds":
-                ledsSocket = socket
+                // TODO
                 break;
             default:
                 break;
@@ -185,11 +57,11 @@ export default function createManager () {
             process.exit();
         }
         if (['n', 'space', 'right'].includes(key.name)) {
-            nextStep()
+            stepsManager.nextStep()
             return
         }
         if (['p', 'backspace', 'left'].includes(key.name)) {
-            prevStep()
+            stepsManager.prevStep()
             return
         }
     });
