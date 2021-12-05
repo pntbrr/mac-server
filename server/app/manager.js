@@ -30,7 +30,7 @@ export default function createManager () {
             log(chalk.red(`[INFO] Device named ${name} disconnected`))
         })
         switch (name) {
-            case "iPhone":
+            case "spheros":
                 setUpSpheros(socket, stepsManager, state)
                 break;
             case "drone":

@@ -38,6 +38,14 @@ export default class StepsManager extends EventEmitter {
 
     updateStep() {
         log(chalk.green(`[STEPS] Moving to step "${(this.steps)[this.currentStepIndex]}"`))
-        stepsEvents.emit((this.steps)[this.currentStepIndex])
+        this.emit(this.steps[this.currentStepIndex])
+        this.emit("step", this.steps[this.currentStepIndex])
+    }
+
+    on(event, cb) {
+        super.on(event, cb)
+        return () => {
+            this.off(event, cb)
+        }
     }
 }
