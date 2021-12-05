@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events'
 import { Socket } from 'socket.io'
-import { ref, watch } from '../lib/reactive.js'
+import { ref, watch, get } from '../lib/reactive.js'
 
 import readline from 'readline'
 import chalk from 'chalk'
@@ -13,8 +13,8 @@ export default function createManager () {
     let valveSocket
     let animationSocket
     let ledsSocket
-    const isMoving = ref(0)
 
+    // Steps
     const steps = [
       "idle",
       "pickup",
@@ -34,6 +34,16 @@ export default function createManager () {
 
         currentStepIndex = stepIndex
         updateStep()
+    }
+
+    // States
+    const state = {
+        sunBath: {
+            animationDuration: ref(0)
+        },
+        press: {
+            isMoving: ref(false)
+        },
     }
 
     function nextStep () {
@@ -78,7 +88,7 @@ export default function createManager () {
 
         })
         socket.on('winemaker', (movingVal) => {
-            isMoving.value = movingVal
+            state.press.isMoving.value = movingVal
         })
     }
     /**
@@ -89,11 +99,8 @@ export default function createManager () {
             socket.emit("rise")
         })
         socket.on("start arc", (duration) => {
-            console.log(+duration)
+            state.sunBath.animationDuration.value = duration
             goToStep('sun bath')
-        })
-        stepsEvents.on("sun bath", () => {
-            socket.emit("spread sunlight")
         })
     }
 
@@ -102,8 +109,8 @@ export default function createManager () {
      */
     function setUpValve (socket) {
         valveSocket = socket
-        const unwatch = watch(isMoving, () => {
-            socket.emit('setvalve', isMoving.value ? "on" : "off")
+        const unwatch = watch(state.press.isMoving, () => {
+            socket.emit('setvalve', get(state.press.isMoving) ? "on" : "off")
         })
         socket.on('disconnect', unwatch)
     }
@@ -113,7 +120,7 @@ export default function createManager () {
      */
     function setUpAnimation(socket) {
         animationSocket = socket
-        const updateState = () => socket.emit('setAnimSpeed', isMoving.value)
+        const updateState = () => socket.emit('setAnimSpeed', get(state.press.isMoving))
 
         stepsEvents.on("sun bath", () => {
             // socket.emit("", () => {
@@ -128,7 +135,7 @@ export default function createManager () {
         })
 
         updateState()
-        const unwatch = watch(isMoving, () => {
+        const unwatch = watch(state.press.isMoving, () => {
             updateState()
         })
 

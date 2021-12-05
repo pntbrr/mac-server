@@ -47,3 +47,12 @@ export const watch = (ref, callback) => {
         ref.off('change', callback)
     }
 }
+
+/**
+ *
+ * @param {Ref} val
+ * @returns {*}
+ */
+export const get = val => {
+    return val.value
+}
