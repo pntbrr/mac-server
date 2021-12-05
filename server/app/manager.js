@@ -1,15 +1,15 @@
-const { EventEmitter } = require('events')
-const { Socket } = require('socket.io')
-const {ref, watch} = require('../lib/reactive')
+import { EventEmitter } from 'events'
+import { Socket } from 'socket.io'
+import { ref, watch } from '../lib/reactive.js'
 
-const readline = require('readline');
+import readline from 'readline'
+import chalk from 'chalk'
+
 readline.emitKeypressEvents(process.stdin);
 process.stdin.setRawMode(true)
+const log = console.log
 
-
-function createManager () {
-    let iPhoneSocket
-    let iPadSocket
+export default function createManager () {
     let valveSocket
     let animationSocket
     let ledsSocket
@@ -28,39 +28,34 @@ function createManager () {
     ]
     let currentStepIndex = 0
     const stepsEvents = new EventEmitter()
+    function goToStep(step) {
+        const stepIndex = steps.indexOf(step)
+        if (stepIndex === -1) return false
+
+        currentStepIndex = stepIndex
+        updateStep()
+    }
 
     function nextStep () {
         if (currentStepIndex >= steps.length - 1) return
         currentStepIndex++
-        stepsEvents.emit(steps[currentStepIndex])
+        updateStep()
     }
     function prevStep () {
         if (currentStepIndex <= 0) return
         currentStepIndex--
-        stepsEvents.emit(steps[currentStepIndex])
+        updateStep()
     }
 
-    process.stdin.on('keypress', (str, key) => {
-        if (key.ctrl && key.name === 'c') {
-            process.exit();
-        }
-        if (key.name === 'n' || key.name === 'space') {
-            console.log('next step')
-            nextStep()
-            return
-        }
-        if (key.name === 'p') {
-            console.log('prev step')
-            prevStep()
-            return
-        }
-    });
+    function updateStep() {
+        log(chalk.green(`[STEPS] Moving to step "${steps[currentStepIndex]}"`))
+        stepsEvents.emit(steps[currentStepIndex])
+    }
 
     /**
      * @param {Socket} socket
      */
-    function setUpIphone(socket) {
-        iPhoneSocket = socket
+    function setupSpheros(socket) {
 
         stepsEvents.on("pickup", () => {
             socket.emit("grow")
@@ -89,13 +84,13 @@ function createManager () {
     /**
      * @param {Socket} socket
      */
-    function setUpIpad (socket) {
-        iPadSocket = socket
+    function setUpDrone (socket) {
         stepsEvents.on("sun rises", () => {
             socket.emit("rise")
         })
-        socket.on("rise end", () => {
-            stepsEvents.emit("sun bath")
+        socket.on("start arc", (duration) => {
+            console.log(+duration)
+            goToStep('sun bath')
         })
         stepsEvents.on("sun bath", () => {
             socket.emit("spread sunlight")
@@ -151,15 +146,16 @@ function createManager () {
      * @param {Socket} socket
      */
     function connectDevice(name, socket) {
+        log(chalk.cyan(`[INFO] Device connected, named ${name}`))
         socket.on('disconnect', () => {
-            console.log(`${name} disconnected`)
+            log(chalk.red(`[INFO] Device named ${name} disconnected`))
         })
         switch (name) {
             case "iPhone":
-                setUpIphone(socket)
+                setupSpheros(socket)
                 break;
-            case "iPad":
-                setUpIpad(socket)
+            case "drone":
+                setUpDrone(socket)
                 break;
             case "valve":
                 setUpValve(socket)
@@ -175,8 +171,23 @@ function createManager () {
         }
     }
 
+    // Bind keyboard
+    process.stdin.on('keypress', (str, key) => {
+        if (process.argv[2] === '--debug-keys') console.log(key)
+        if (key.ctrl && key.name === 'c') {
+            process.exit();
+        }
+        if (['n', 'space', 'right'].includes(key.name)) {
+            nextStep()
+            return
+        }
+        if (['p', 'backspace', 'left'].includes(key.name)) {
+            prevStep()
+            return
+        }
+    });
+
     return {
         connectDevice
     }
 }
-module.exports = createManager

@@ -1,10 +1,17 @@
-const express = require('express');
+import chalk from 'chalk'
+import express from 'express'
+import history from 'connect-history-api-fallback'
+import http from 'http'
+import { Server } from 'socket.io'
+
+import PeerTalk from 'peertalk'
+import { createDroneSocket } from './app/droneSocket.js'
+import createManager from './app/manager.js'
+
+const log = console.log
 const app = express();
-const history = require('connect-history-api-fallback');
-const http = require('http');
 const server = http.createServer(app);
-const { Server } = require("socket.io");
-const createManager = require('./app/manager')
+
 
 const io = new Server(server, {
     allowEIO3: true,
@@ -30,12 +37,17 @@ const manager = createManager()
 
 io.on('connection', (socket) => {
     socket.on('hello', ({device}) => {
-        console.log('a device connected, named', device)
         manager.connectDevice(device, socket)
     })
 });
 
-
+const peerTalk = new PeerTalk();
+peerTalk.then((device) => {
+    const socket = createDroneSocket(device)
+    manager.connectDevice('drone', socket)
+}).catch(e => {
+    log(chalk.yellow`[WARN] No PeerTalk device detected. The drone controller won't be available until relaunch of server`)
+});
 
 server.listen(3000, () => {
     console.log('listening on *:3000');

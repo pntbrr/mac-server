@@ -1,4 +1,4 @@
-const { EventEmitter } = require('events')
+import { EventEmitter } from 'events'
 
 class Ref extends EventEmitter {
     #value
@@ -33,7 +33,7 @@ class Ref extends EventEmitter {
     }
 }
 
-const ref = value => {
+export const ref = value => {
     return new Ref(value)
 }
 
@@ -41,14 +41,9 @@ const ref = value => {
  * @param {Ref} ref
  * @param {Function} callback
  */
-const watch = (ref, callback) => {
+export const watch = (ref, callback) => {
     ref.on('change', callback)
     return () => {
         ref.off('change', callback)
     }
-}
-
-module.exports = {
-    ref,
-    watch,
 }
