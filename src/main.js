@@ -4,6 +4,7 @@ import App from './App.vue'
 import Home from './routes/Home.vue'
 import FeetGrapes from './routes/FeetGrapes.vue'
 import Sundial from './routes/Sundial.vue'
+import { createPinia } from 'pinia'
 
 const routes = [
     { path: '/', component: Home },
@@ -16,5 +17,6 @@ const router = createRouter({
 })
 
 createApp(App)
+    .use(createPinia())
     .use(router)
     .mount('#app')

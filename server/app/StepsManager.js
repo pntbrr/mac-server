@@ -48,4 +48,33 @@ export default class StepsManager extends EventEmitter {
             this.off(event, cb)
         }
     }
+    newContext() {
+        return new StepsContext(this)
+    }
+}
+
+export class StepsContext {
+    manager
+    listeners = []
+    /**
+     *
+     * @param { StepsManager} manager
+     */
+    constructor(manager) {
+        this.manager = manager
+        this.nextStep = manager.nextStep.bind(manager)
+        this.prevStep = manager.prevStep.bind(manager)
+        this.goTo = manager.goTo.bind(manager)
+        this.steps = manager.steps
+        this.off = this.unbindAll
+    }
+    on (event, cb) {
+        this.listeners.push({ event, cb })
+        this.manager.on(event, cb)
+    }
+    unbindAll() {
+        this.listeners.forEach(listener => {
+            this.manager.off(listener.event, listener.cb)
+        })
+    }
 }

@@ -1,10 +1,21 @@
 import { io } from 'socket.io-client'
+import { useStore } from './store'
 
-const socket = io()
-// const socket = io("http://192.168.2.1:3000")
+
+const socket = import.meta.env.DEV
+    ? io("http://localhost:3000")
+    : io()
 
 socket.on('connect', () => {
     socket.emit('hello', {device: 'animation'})
 })
 
+export function linkStore() {
+    const store = useStore()
+    socket.on('setFeetAnimSpeed', (val) => {
+        store.feetAnimSpeed = val
+    })
+}
+
 export default socket
+

@@ -1,15 +1,19 @@
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import socket from '../socket'
+import { useStore } from '../store'
 
 const animSpeed = ref(0)
 
 
 
 export default function useAnimPlay() {
+    const store = useStore()
     let animDuration
-    socket.on('playSundialAnim', (duration = 1) => {
+    const animSpeed = computed(() => {
+        const duration = store.sundialAnimDuration
+        if (duration === 0) return 0
         if (animDuration) {
-            animSpeed.value = animDuration / duration
+             return animDuration / duration
         }
     })
     const setAnimController = (anim) => {

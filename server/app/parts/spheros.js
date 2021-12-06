@@ -1,17 +1,22 @@
 import { Socket } from 'socket.io'
 import chalk from "chalk";
-
 const log = console.log
 
+import state from '../state'
 /**
  * @param {Socket} socket
- * @param {StepsManager} steps
- * @param state
+ * @param {StepsContext} steps
+ * @param watcher
  */
-export default function setUpSpheros (socket, steps, state) {
-    // TODO : register all off for stepsEvent
-    const off = steps.on("step", (step) => {
+export default function setUpSpheros (socket, steps, { watch }) {
+     steps.on("step", (step) => {
         socket.emit("step", step)
+    })
+    steps.on("pickup", () => {
+        socket.emit("grow")
+    })
+    socket.on("grape picked", () => {
+        console.log("grape pick detected")
     })
 
     socket.on("spherosConnected", () => {
@@ -28,8 +33,5 @@ export default function setUpSpheros (socket, steps, state) {
         socket.on('winemaker', (movingVal) => {
             state.press.isMoving.value = movingVal
         })
-    })
-    socket.on('disconnect', () => {
-        off()
     })
 }

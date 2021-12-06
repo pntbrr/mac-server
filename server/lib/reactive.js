@@ -56,3 +56,18 @@ export const watch = (ref, callback) => {
 export const get = val => {
     return val.value
 }
+
+export const watcher = () => {
+    let watches = []
+
+    const watchLocal = (ref, callback) => {
+        watches.push(watch(ref, callback))
+    }
+    const unWatchAll = () => {
+        watches.forEach(unWatch => unWatch())
+    }
+    return {
+        watch: watchLocal,
+        unWatchAll
+    }
+}

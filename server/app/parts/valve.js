@@ -1,13 +1,12 @@
 import { Socket } from 'socket.io'
-import { get, watch } from '../../lib/reactive.js'
+import state from '../state'
 /**
  * @param {Socket} socket
- * @param {StepsManager} steps
- * @param state
+ * @param {StepsContext} steps
+ * @param watcher
  */
-export default function setUpValve (socket, steps, state) {
-    const unwatch = watch(state.press.isMoving, () => {
-        socket.emit('setvalve', get(state.press.isMoving) ? "on" : "off")
+export default function setUpValve (socket, steps, { watch }) {
+     watch(state.press.isMoving, () => {
+        socket.emit('setvalve', state.press.isMoving.value ? "on" : "off")
     })
-    socket.on('disconnect', unwatch)
 }

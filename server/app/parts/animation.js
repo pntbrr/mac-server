@@ -1,31 +1,22 @@
 import { Socket } from 'socket.io'
-import { get, watch } from '../../lib/reactive.js'
+import state from '../state'
 /**
  * @param {Socket} socket
- * @param {StepsManager} steps
- * @param {state} state
+ * @param {StepsContext} steps
+ * @param watcher
  */
-export default function setUpAnimation (socket, steps, state) {
-    const updateState = () => socket.emit('setAnimSpeed', get(state.press.isMoving))
+export default function setUpAnimation (socket, steps, { watch }) {
+    const updateState = () => {
+        console.log('updateAnim')
+        socket.emit('setFeetAnimSpeed', state.press.isMoving.value ? 1 : 0)
+    }
 
     steps.on("sun bath", () => {
-        // socket.emit("", () => {
-        //
-        // })
-    })
-
-    steps.on("", () => {
-        // socket.emit("", () => {
-        //
-        // })
+        console.log('step sunbath !')
     })
 
     updateState()
-    const unwatch = watch(state.press.isMoving, () => {
-        updateState()
-    })
-
-    socket.on('disconnect', unwatch)
+    watch(state.press.isMoving, updateState)
 
     // Sun dial
     const playSundialAnin = duration => {
