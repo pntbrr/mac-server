@@ -1,13 +1,12 @@
 import { computed, ref } from 'vue'
-import socket from '../socket'
-import { useStore } from '../store'
+import { pinia, useStore } from '../store'
 
 const animSpeed = ref(0)
 
 
 
 export default function useAnimPlay() {
-    const store = useStore()
+    const store = useStore(pinia)
     let animDuration
     const animSpeed = computed(() => {
         const duration = store.sundialAnimDuration

@@ -1,5 +1,5 @@
 import { io } from 'socket.io-client'
-import { useStore } from './store'
+import { pinia, useStore } from './store'
 
 
 const socket = import.meta.env.DEV
@@ -10,11 +10,12 @@ socket.on('connect', () => {
     socket.emit('hello', {device: 'animation'})
 })
 
-export function linkStore() {
-    const store = useStore()
+export function linkSocketToStore() {
+    const store = useStore(pinia)
     socket.on('setFeetAnimSpeed', (val) => {
         store.feetAnimSpeed = val
     })
+    socket.on('playSundialAnim', store.playSundial)
 }
 
 export default socket

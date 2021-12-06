@@ -11,15 +11,17 @@ export default function setUpAnimation (socket, steps, { watch }) {
         socket.emit('setFeetAnimSpeed', state.press.isMoving.value ? 1 : 0)
     }
 
-    steps.on("sun bath", () => {
-        console.log('step sunbath !')
+    const playSundialAnim = duration => {
+        socket.emit('playSundialAnim', duration)
+    }
+
+    steps.on("sun bath", direction => {
+        console.log(direction)
+        if (direction > 0) {
+            playSundialAnim(1)
+        }
     })
 
     updateState()
     watch(state.press.isMoving, updateState)
-
-    // Sun dial
-    const playSundialAnin = duration => {
-        socket.emit('playSundialAnim', duration)
-    }
 }

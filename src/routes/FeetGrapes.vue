@@ -4,9 +4,10 @@
 import { computed, ref, watch } from 'vue'
 import gsap from 'gsap'
 import LottieAnimation from '../components/lib/LottieAnimation.vue'
-import useAnimSpeed from '../composables/useAnimSpeed'
+import { useStore } from '../store'
+import { storeToRefs } from 'pinia'
 
-const {animSpeed: speed} = useAnimSpeed()
+const {feetAnimSpeed: speed} = storeToRefs(useStore())
 const tweenedSpeed = ref(0)
 const realSpeed = computed(() => +tweenedSpeed.value.toFixed(2))
 

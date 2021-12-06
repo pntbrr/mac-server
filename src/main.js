@@ -4,7 +4,8 @@ import App from './App.vue'
 import Home from './routes/Home.vue'
 import FeetGrapes from './routes/FeetGrapes.vue'
 import Sundial from './routes/Sundial.vue'
-import { createPinia } from 'pinia'
+import { linkSocketToStore } from './socket'
+import { pinia } from './store'
 
 const routes = [
     { path: '/', component: Home },
@@ -15,8 +16,9 @@ const router = createRouter({
     history: createWebHistory(),
     routes,
 })
-
 createApp(App)
-    .use(createPinia())
+    .use(pinia)
     .use(router)
     .mount('#app')
+
+linkSocketToStore()

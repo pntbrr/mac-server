@@ -15,31 +15,40 @@ export default class StepsManager extends EventEmitter {
         "pour water",
         "re-shake"
     ]
-    currentStepIndex = 0
+    #_currentStepIndex = 0
+    get currentStepIndex() {
+        return this.#_currentStepIndex
+    }
+    set currentStepIndex(newVal) {
+        const oldVal = this.#_currentStepIndex
+        this.#_currentStepIndex = newVal
+
+        this.updateStep(newVal, oldVal)
+    }
+
     goTo(step) {
         const stepIndex = this.steps.indexOf(step)
         if (stepIndex === -1) return false
 
         this.currentStepIndex = stepIndex
-        this.updateStep()
     }
-
 
     nextStep () {
         if (this.currentStepIndex >= this.steps.length - 1) return
         this.currentStepIndex++
-        this.updateStep()
     }
     prevStep () {
         if (this.currentStepIndex <= 0) return
         this.currentStepIndex--
-        this.updateStep()
     }
 
-    updateStep() {
+    updateStep(newVal, oldVal) {
         log(chalk.green(`[STEPS] Moving to step "${(this.steps)[this.currentStepIndex]}"`))
-        this.emit(this.steps[this.currentStepIndex])
-        this.emit("step", this.steps[this.currentStepIndex])
+
+        const direction = newVal - oldVal
+
+        this.emit(this.steps[this.currentStepIndex], direction)
+        this.emit("step", this.steps[this.currentStepIndex], direction)
     }
 
     on(event, cb) {
