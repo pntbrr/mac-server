@@ -48,7 +48,7 @@ export default function createManager () {
             case "animation":
                 setUpAnimation(socket, stepsContext, w)
                 break;
-            case "leds":
+            case "gauge":
                 // TODO
                 break;
             default:

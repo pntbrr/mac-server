@@ -6,22 +6,26 @@ import state from '../state'
  * @param watcher
  */
 export default function setUpAnimation (socket, steps, { watch }) {
-    const updateState = () => {
-        console.log('updateAnim')
-        socket.emit('setFeetAnimSpeed', state.press.isMoving.value ? 1 : 0)
-    }
 
+    // Sundial
     const playSundialAnim = duration => {
         socket.emit('playSundialAnim', duration)
     }
-
     steps.on("sun bath", direction => {
-        console.log(direction)
         if (direction > 0) {
-            playSundialAnim(1)
+            playSundialAnim(state.sunBath.animationDuration.value)
         }
     })
 
-    updateState()
-    watch(state.press.isMoving, updateState)
+    // Feet press animation
+    const updateFeetAnimation = () => {
+        console.log('updateAnim')
+        socket.emit('setFeetAnimSpeed', state.press.isMoving.value ? 1 : 0)
+    }
+    updateFeetAnimation()
+    watch(state.press.isMoving, () => {
+        if (steps.currentStep === 'press') {
+            updateFeetAnimation()
+        }
+    })
 }

@@ -25,6 +25,9 @@ export default class StepsManager extends EventEmitter {
 
         this.updateStep(newVal, oldVal)
     }
+    get currentStep() {
+        return this.steps[this.currentStepIndex]
+    }
 
     goTo(step) {
         const stepIndex = this.steps.indexOf(step)
@@ -76,6 +79,9 @@ export class StepsContext {
         this.goTo = manager.goTo.bind(manager)
         this.steps = manager.steps
         this.off = this.unbindAll
+    }
+    get currentStep() {
+        return this.manager.currentStep
     }
     on (event, cb) {
         this.listeners.push({ event, cb })
