@@ -19,7 +19,6 @@ export default function setUpAnimation (socket, steps, { watch }) {
 
     // Feet press animation
     const updateFeetAnimation = () => {
-        console.log('updateAnim')
         socket.emit('setFeetAnimSpeed', state.press.isMoving.value ? 1 : 0)
     }
     updateFeetAnimation()

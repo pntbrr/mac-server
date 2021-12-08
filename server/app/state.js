@@ -7,5 +7,8 @@ const state = {
     press: {
         isMoving: ref(false)
     },
+    shake: {
+        valveVal: ref(0)
+    }
 }
 export default state
