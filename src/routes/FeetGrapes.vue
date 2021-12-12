@@ -25,7 +25,7 @@ watch(speed, (newVal, oldVal) => {
   <LottieAnimation
       ref="lottie"
       class="lottie"
-      path="https://assets3.lottiefiles.com/packages/lf20_riok2joc.json"
+      path="/lottiefiles/press.json"
       :auto-play="true"
       :loop="true"
       :speed="realSpeed"

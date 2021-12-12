@@ -26,7 +26,7 @@ store.$onAction(({name, after}) => {
   <LottieAnimation
       ref="lottie"
       class="lottie"
-      path="https://assets10.lottiefiles.com/packages/lf20_19m6hu.json"
+      path="/lottiefiles/sundial.json"
       :auto-play="true"
       :loop="false"
       :speed="animSpeed"
