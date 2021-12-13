@@ -2,7 +2,7 @@ import { ref } from '../lib/reactive.js'
 
 const state = {
     sunBath: {
-        animationDuration: ref(10)
+        animationDuration: ref(0)
     },
     press: {
         isMoving: ref(false)
