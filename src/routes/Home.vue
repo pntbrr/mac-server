@@ -1,7 +1,7 @@
 <script setup></script>
 <template>
   <div>
-    BONJOUR <br>
+    PointBarre <br>
     <RouterLink to="/sundial">Sundial</RouterLink><br>
     <RouterLink to="/feet">Presse raisins</RouterLink>
   </div>

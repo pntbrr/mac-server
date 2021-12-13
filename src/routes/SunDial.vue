@@ -16,10 +16,17 @@ const animLoaded = controller => {
 }
 
 store.$onAction(({name, after}) => {
-  if(name === 'playSundial') {
+  if (name === 'playSundial') {
     anim.value.goToAndPlay(0)
   }
 })
+const toggleFullScreen = () => {
+  if (document.fullscreenElement) {
+    document.exitFullscreen()
+    return;
+  }
+  document.documentElement.requestFullscreen()
+}
 </script>
 
 <template>
@@ -32,11 +39,23 @@ store.$onAction(({name, after}) => {
       :speed="animSpeed"
       @AnimControl="animLoaded"
   />
+  <div
+      class="cache-click"
+      @click="toggleFullScreen()"
+  >
+  </div>
 </template>
 
 <style>
 .lottie {
   width: 100vw;
   height: 100vh;
+}
+.cache-click {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 </style>

@@ -36,5 +36,6 @@ watch(speed, (newVal, oldVal) => {
 .lottie {
   width: 100vw;
   height: 100vh;
+  cursor: none;
 }
 </style>
