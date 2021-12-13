@@ -35,8 +35,8 @@ export default function setUpSpheros(socket, steps, {watch}) {
 
         socket.on('shake', (shakeVal) => {
             if (steps.currentStep === 'shake') {
-                state.shake.valveVal.value += shakeVal
-                console.log('La jauge est à', state.shake.valveVal.value.toFixed(2))
+                state.shake.gaugeVal.value += shakeVal
+                console.log('La jauge est à', state.shake.gaugeVal.value.toFixed(2))
             }
         })
     })

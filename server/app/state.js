@@ -8,7 +8,7 @@ const state = {
         isMoving: ref(false)
     },
     shake: {
-        valveVal: ref(0)
+        gaugeVal: ref(0)
     }
 }
 export default state

@@ -9,6 +9,7 @@ import setUpSpheros from './parts/spheros.js'
 import setUpAnimation from './parts/animation.js'
 import { watcher } from '../lib/reactive'
 import state from './state'
+import setUpGauge from './parts/gauge'
 
 readline.emitKeypressEvents(process.stdin);
 process.stdin.setRawMode(true)
@@ -49,7 +50,7 @@ export default function createManager () {
                 setUpAnimation(socket, stepsContext, w)
                 break;
             case "gauge":
-                // TODO
+                setUpGauge(socket, stepsContext, w)
                 break;
             default:
                 break;
@@ -62,16 +63,29 @@ export default function createManager () {
         if (key.ctrl && key.name === 'c') {
             process.exit();
         }
-        if (['n', 'space', 'right'].includes(key.name)) {
+
+        const isKey = (...keys) => {
+            return keys.includes(key.name)
+        }
+
+        if (isKey('n', 'space', 'right')) {
             stepsManager.nextStep()
             return
         }
-        if (['p', 'backspace', 'left'].includes(key.name)) {
+        if (isKey('p', 'backspace', 'left')) {
             stepsManager.prevStep()
             return
         }
-        if (['t'].includes(key.name)) {
+        if (isKey('t')) {
             state.press.isMoving.value = !state.press.isMoving.value
+            return
+        }
+        if (isKey('up')) {
+            state.shake.gaugeVal.value += 0.1
+            return
+        }
+        if (isKey('down')) {
+            state.shake.gaugeVal.value -= 0.1
             return
         }
     });
