@@ -9,6 +9,7 @@ export default function setUpAnimation (socket, steps, { watch }) {
 
     // Sundial
     const playSundialAnim = duration => {
+        console.log('sundial')
         socket.emit('playSundialAnim', duration)
     }
     steps.on("sun bath", direction => {

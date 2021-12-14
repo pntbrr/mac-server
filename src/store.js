@@ -8,6 +8,7 @@ export const useStore = defineStore('main', {
     }),
     actions: {
         playSundial(duration) {
+            console.log(duration)
             this.sundialAnimDuration = duration
         }
     }

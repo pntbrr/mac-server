@@ -20,13 +20,6 @@ store.$onAction(({name, after}) => {
     anim.value.goToAndPlay(0)
   }
 })
-const toggleFullScreen = () => {
-  if (document.fullscreenElement) {
-    document.exitFullscreen()
-    return;
-  }
-  document.documentElement.requestFullscreen()
-}
 </script>
 
 <template>
@@ -41,7 +34,6 @@ const toggleFullScreen = () => {
   />
   <div
       class="cache-click"
-      @click="toggleFullScreen()"
   >
   </div>
 </template>
