@@ -81,11 +81,11 @@ export default function createManager () {
             return
         }
         if (isKey('up')) {
-            state.shake.gaugeVal.value += 0.1
+            state.alcohol.gaugeVal.value += 0.1
             return
         }
         if (isKey('down')) {
-            state.shake.gaugeVal.value -= 0.1
+            state.alcohol.gaugeVal.value -= 0.1
             return
         }
     });

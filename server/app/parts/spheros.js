@@ -28,15 +28,52 @@ export default function setUpSpheros(socket, steps, {watch}) {
             socket.emit("solar", state.sunBath.animationDuration.value)
         })
 
-        socket.on('winemaker', (movingVal) => {
+        socket.on('pressing', (movingVal) => {
             if (movingVal && steps.currentStep !== 'press') return
             state.press.isMoving.value = !!movingVal
         })
 
-        socket.on('shake', (shakeVal) => {
-            if (steps.currentStep === 'shake') {
-                state.shake.gaugeVal.value += shakeVal
-                console.log('La jauge est à', state.shake.gaugeVal.value.toFixed(2))
+        socket.on('shaking', (shakeVal) => {
+            if (steps.currentStep === 'shake' && state.alcohol.gaugeVal.value < 10) {    //
+                state.alcohol.gaugeVal.value += shakeVal/100
+
+                if(state.alcohol.gaugeVal.value >= 6) {
+                    state.alcohol.gaugeVal.value = 8.5
+                    steps.nextStep()
+                }
+                console.log('La jauge est à', state.alcohol.gaugeVal.value.toFixed(2))
+            }
+        })
+    })
+
+    socket.on("bluetileConnected", () => {
+        log(chalk.bgBlue("[DEVICE:spheros] Bluetile connected"))
+
+        socket.on('pouring', (pourVal) => {
+            if (steps.currentStep === 'pour water' && state.alcohol.gaugeVal.value > 6) {
+                switch (true) {
+                    case (pourVal > 300):
+                        pourVal = 0.2
+                        break;
+                    case (pourVal > 150):
+                        pourVal = 0.1
+                        break;
+                    case (pourVal > 0):
+                        pourVal = 0.07
+                        break;
+                    case (pourVal > -200):
+                        pourVal = 0.05
+                        break;
+                    case (pourVal > -700):
+                        pourVal = 0.02
+                        break;
+                    default:
+                        pourVal = 0
+                        break;
+                }
+                console.log("pourVal", pourVal)
+                state.alcohol.gaugeVal.value -= pourVal
+                console.log('La jauge est à', state.alcohol.gaugeVal.value.toFixed(2))
             }
         })
     })
