@@ -12,6 +12,7 @@ export default function setUpDrone (socket, steps, { watch }) {
     })
     socket.on("start arc", (duration) => {
         state.sunBath.animationDuration.value = +duration
+        console.log('animation duration is ' + state.sunBath.animationDuration.value)
         steps.goTo('sun bath')
     })
 
