@@ -6,9 +6,14 @@ import state from '../state'
  * @param watcher
  */
 export default function setUpGauge (socket, steps, { watch }) {
-    watch(state.shake.gaugeVal, newVal => {
-        newVal = Math.round(newVal * 100) / 100
-        console.log(newVal)
-        socket.emit("setGauge", newVal)
-    })
+    const updateGaugeVal = (newVal) => {
+
+        if(steps.currentStep === 'shake' || steps.currentStep === 'pour water') {
+            newVal = Math.round(newVal * 100) / 1000
+            socket.emit("setGauge", newVal)
+            console.log("newVal", newVal)
+        }
+    }
+    updateGaugeVal(state.alcohol.gaugeVal.value)
+    watch(state.alcohol.gaugeVal, updateGaugeVal)
 }

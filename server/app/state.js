@@ -7,7 +7,7 @@ const state = {
     press: {
         isMoving: ref(false)
     },
-    shake: {
+    alcohol: {
         gaugeVal: ref(0)
     }
 }

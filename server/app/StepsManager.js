@@ -11,6 +11,7 @@ export default class StepsManager extends EventEmitter {
         "sun bath",
         "get on",
         "press",
+        "break",
         "shake",
         "pour water",
         "re-shake"
