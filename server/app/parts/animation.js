@@ -8,13 +8,12 @@ import state from '../state'
 export default function setUpAnimation (socket, steps, { watch }) {
 
     // Sundial
-    const playSundialAnim = duration => {
-        console.log('sundial')
-        socket.emit('playSundialAnim', duration)
+    const playSundialAnim = (duration, loops) => {
+        socket.emit('playSundialAnim', { duration, loops })
     }
     steps.on("sun bath", direction => {
         if (direction > 0) {
-            playSundialAnim(state.sunBath.animationDuration.value)
+            playSundialAnim(state.sunBath.animationDuration.value,state.sunBath.loops.value)
         }
     })
 

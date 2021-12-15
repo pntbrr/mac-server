@@ -18,6 +18,7 @@ const animLoaded = controller => {
 store.$onAction(({name, after}) => {
   if (name === 'playSundial') {
     anim.value.goToAndPlay(0)
+    setTimeout(() => anim.value.pause(), store.sundialAnim.duration * 1000)
   }
 })
 </script>
@@ -27,8 +28,8 @@ store.$onAction(({name, after}) => {
       ref="lottie"
       class="lottie"
       path="/lottiefiles/sundial.json"
-      :auto-play="true"
-      :loop="false"
+      :auto-play="false"
+      :loop="true"
       :speed="animSpeed"
       @AnimControl="animLoaded"
   />

@@ -4,12 +4,16 @@ export const pinia = createPinia()
 export const useStore = defineStore('main', {
     state: () => ({
         feetAnimSpeed: 0,
-        sundialAnimDuration: 0,
+        sundialAnim: {
+            duration: 0,
+            loops: 0,
+        },
     }),
     actions: {
-        playSundial(duration) {
-            console.log(duration)
-            this.sundialAnimDuration = duration
+        playSundial({ duration, loops }) {
+            console.log(loops)
+            this.sundialAnim.loops = loops
+            this.sundialAnim.duration = duration
         }
     }
 })
