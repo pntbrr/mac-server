@@ -20,14 +20,17 @@ export default function setUpSpheros(socket, steps, {watch}) {
     socket.on("spherosConnected", () => {
         log(chalk.bgBlue("[DEVICE:spheros] All spheros connected"))
 
+        // Pickup: mûrir
         steps.on("pickup", () => {
             socket.emit("grow")
         })
 
+        // Sun bath : gorger de sucre
         steps.on("sun bath", () => {
             socket.emit("solar", state.sunBath.animationDuration.value)
         })
 
+        // Get On: Détecter on monte sur la presse
         let received = false
         socket.on('get on', () => {
             if (steps.currentStep === 'get on') {
@@ -41,6 +44,20 @@ export default function setUpSpheros(socket, steps, {watch}) {
             }
         })
 
+        // Pressing: on est en train de presser.
+        let ledsOff = 0
+        steps.on('press', () => {
+            const pressedInterval = setInterval(() => {
+                socket.emit('pressed')
+                if (state.press.isMoving.value) {
+                    ledsOff++
+                }
+                if (ledsOff >= 64) {
+                    clearInterval(pressedInterval)
+                    steps.nextStep()
+                }
+            }, (state.press.fullPressDuration * 1000) / 64) // 64: number of leds in sphero
+        })
         socket.on('pressing', (movingVal) => {
             if (movingVal && steps.currentStep !== 'press') return
             state.press.isMoving.value = !!movingVal
