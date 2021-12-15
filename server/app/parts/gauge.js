@@ -14,6 +14,8 @@ export default function setUpGauge (socket, steps, { watch }) {
             console.log("newVal", newVal)
         }
     }
-    updateGaugeVal(state.alcohol.gaugeVal.value)
+    setTimeout(() => {
+        updateGaugeVal(state.alcohol.gaugeVal.value)
+    },1000)
     watch(state.alcohol.gaugeVal, updateGaugeVal)
 }

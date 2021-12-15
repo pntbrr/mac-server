@@ -9,7 +9,6 @@ const state = {
     },
     alcohol: {
         gaugeVal: ref(0)
-
     }
 }
 export default state
