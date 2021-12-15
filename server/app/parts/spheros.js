@@ -28,6 +28,19 @@ export default function setUpSpheros(socket, steps, {watch}) {
             socket.emit("solar", state.sunBath.animationDuration.value)
         })
 
+        let received = false
+        socket.on('get on', () => {
+            if (steps.currentStep === 'get on') {
+                if (!received) {
+                    received = true
+                    setTimeout(() => {
+                        received = false
+                        steps.nextStep()
+                    }, 2000)
+                }
+            }
+        })
+
         socket.on('pressing', (movingVal) => {
             if (movingVal && steps.currentStep !== 'press') return
             state.press.isMoving.value = !!movingVal
@@ -35,9 +48,9 @@ export default function setUpSpheros(socket, steps, {watch}) {
 
         socket.on('shaking', (shakeVal) => {
             if (steps.currentStep === 'shake' && state.alcohol.gaugeVal.value < 10) {    //
-                state.alcohol.gaugeVal.value += shakeVal/100
+                state.alcohol.gaugeVal.value += shakeVal / 100
 
-                if(state.alcohol.gaugeVal.value >= 6) {
+                if (state.alcohol.gaugeVal.value >= 6) {
                     state.alcohol.gaugeVal.value = 8.5
                     steps.nextStep()
                 }
