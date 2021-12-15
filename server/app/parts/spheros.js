@@ -34,8 +34,8 @@ export default function setUpSpheros(socket, steps, {watch}) {
                 if (!received) {
                     received = true
                     setTimeout(() => {
-                        received = false
                         steps.nextStep()
+                        received = false
                     }, 2000)
                 }
             }
