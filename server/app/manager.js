@@ -88,6 +88,9 @@ export default function createManager () {
             state.alcohol.gaugeVal.value -= 0.1
             return
         }
+        if (isKey('r')) {
+            stepsManager.goTo("start")
+        }
     });
 
     return {

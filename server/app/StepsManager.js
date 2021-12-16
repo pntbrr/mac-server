@@ -6,6 +6,7 @@ const log = console.log
 export default class StepsManager extends EventEmitter {
     steps = [
         "idle",
+        "start",
         "pickup",
         "sun rises",
         "sun bath",
@@ -13,8 +14,7 @@ export default class StepsManager extends EventEmitter {
         "press",
         "break",
         "shake",
-        "pour water",
-        "re-shake"
+        "pour water"
     ]
     #_currentStepIndex = 0
     get currentStepIndex() {
@@ -33,7 +33,7 @@ export default class StepsManager extends EventEmitter {
     goTo(step) {
         const stepIndex = this.steps.indexOf(step)
         if (stepIndex === -1) return false
-
+        console.log(step)
         this.currentStepIndex = stepIndex
     }
 
