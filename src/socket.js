@@ -3,7 +3,7 @@ import useStore, { pinia } from './store'
 
 
 const socket = import.meta.env.DEV
-    ? io("http://localhost:3000")
+    ? io("http://10.3.141.100:3000")
     : io()
 
 socket.on('connect', () => {
