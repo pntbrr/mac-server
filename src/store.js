@@ -1,7 +1,9 @@
 import { createPinia, defineStore } from 'pinia'
 
 export const pinia = createPinia()
-export const useStore = defineStore('main', {
+
+const useStore = defineStore({
+    id:'main',
     state: () => ({
         currentStep: 'idle',
         feetAnimSpeed: 0,
@@ -18,3 +20,4 @@ export const useStore = defineStore('main', {
         }
     }
 })
+export default useStore

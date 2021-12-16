@@ -4,7 +4,7 @@
 import { computed, ref, watch } from 'vue'
 import gsap from 'gsap'
 import LottieAnimation from '../components/lib/LottieAnimation.vue'
-import { useStore } from '../store'
+import useStore from '../store'
 import { storeToRefs } from 'pinia'
 
 const {feetAnimSpeed: speed} = storeToRefs(useStore())

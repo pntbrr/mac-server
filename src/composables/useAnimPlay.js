@@ -1,5 +1,5 @@
 import { computed, ref } from 'vue'
-import { pinia, useStore } from '../store'
+import useStore, { pinia } from '../store'
 
 const animSpeed = ref(0)
 

@@ -3,7 +3,7 @@
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 import LottieAnimation from '../components/lib/LottieAnimation.vue'
 import useAnimPlay from '../composables/useAnimPlay'
-import { useStore } from '../store'
+import useStore from '../store'
 import { ref } from 'vue'
 
 const {animSpeed, setAnimController} = useAnimPlay()

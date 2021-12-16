@@ -1,5 +1,5 @@
 import { io } from 'socket.io-client'
-import { pinia, useStore } from './store'
+import useStore, { pinia } from './store'
 
 
 const socket = import.meta.env.DEV
@@ -12,6 +12,11 @@ socket.on('connect', () => {
 
 export function linkSocketToStore() {
     const store = useStore(pinia)
+
+    socket.on('step', (step) => {
+        store.currentStep = step
+    })
+
     socket.on('setFeetAnimSpeed', (val) => {
         store.feetAnimSpeed = val
     })
