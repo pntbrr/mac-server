@@ -45,15 +45,17 @@ export default function setUpSpheros(socket, steps, {watch}) {
         })
 
         // Pressing: on est en train de presser.
-        let ledsOff = 0
         steps.on('press', () => {
+            let ledsOff = 0
             const pressedInterval = setInterval(() => {
-                socket.emit('pressed')
                 if (state.press.isMoving.value) {
                     ledsOff++
+                    console.log(ledsOff)
+                    socket.emit('pressed')
                 }
                 if (ledsOff >= 64) {
                     clearInterval(pressedInterval)
+                    state.press.isMoving.value = false
                     steps.nextStep()
                 }
             }, (state.press.fullPressDuration * 1000) / 64) // 64: number of leds in sphero
@@ -68,7 +70,7 @@ export default function setUpSpheros(socket, steps, {watch}) {
                 state.alcohol.gaugeVal.value += shakeVal / 100
 
                 if (state.alcohol.gaugeVal.value >= 6) {
-                    state.alcohol.gaugeVal.value = 8.5
+                    state.alcohol.gaugeVal.value = 9
                     steps.nextStep()
                 }
                 console.log('La jauge est à', state.alcohol.gaugeVal.value.toFixed(2))
