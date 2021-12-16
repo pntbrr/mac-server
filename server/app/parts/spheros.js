@@ -20,27 +20,46 @@ export default function setUpSpheros(socket, steps, {watch}) {
     socket.on("spherosConnected", () => {
         log(chalk.bgBlue("[DEVICE:spheros] All spheros connected"))
 
+        // Pickup: mûrir
         steps.on("pickup", () => {
             socket.emit("grow")
         })
 
+        // Sun bath : gorger de sucre
         steps.on("sun bath", () => {
             socket.emit("solar", state.sunBath.animationDuration.value)
         })
 
+        // Get On: Détecter on monte sur la presse
         let received = false
         socket.on('get on', () => {
             if (steps.currentStep === 'get on') {
                 if (!received) {
                     received = true
                     setTimeout(() => {
-                        received = false
                         steps.nextStep()
+                        received = false
                     }, 2000)
                 }
             }
         })
 
+        // Pressing: on est en train de presser.
+        steps.on('press', () => {
+            let ledsOff = 0
+            const pressedInterval = setInterval(() => {
+                if (state.press.isMoving.value) {
+                    ledsOff++
+                    console.log(ledsOff)
+                    socket.emit('pressed')
+                }
+                if (ledsOff >= 64) {
+                    clearInterval(pressedInterval)
+                    state.press.isMoving.value = false
+                    steps.nextStep()
+                }
+            }, (state.press.fullPressDuration * 1000) / 64) // 64: number of leds in sphero
+        })
         socket.on('pressing', (movingVal) => {
             if (movingVal && steps.currentStep !== 'press') return
             state.press.isMoving.value = !!movingVal
@@ -51,7 +70,7 @@ export default function setUpSpheros(socket, steps, {watch}) {
                 state.alcohol.gaugeVal.value += shakeVal / 100
 
                 if (state.alcohol.gaugeVal.value >= 6) {
-                    state.alcohol.gaugeVal.value = 8.5
+                    state.alcohol.gaugeVal.value = 9
                     steps.nextStep()
                 }
                 console.log('La jauge est à', state.alcohol.gaugeVal.value.toFixed(2))

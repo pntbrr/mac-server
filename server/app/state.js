@@ -11,7 +11,8 @@ const state = {
         loops: ref(8),
     },
     press: {
-        isMoving: ref(false)
+        isMoving: ref(false),
+        fullPressDuration: 30,
     },
     alcohol: {
         gaugeVal: ref(0)
