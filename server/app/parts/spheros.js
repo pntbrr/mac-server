@@ -19,6 +19,9 @@ export default function setUpSpheros(socket, steps, {watch}) {
     // spheros
     socket.on("spherosConnected", () => {
         log(chalk.bgBlue("[DEVICE:spheros] All spheros connected"))
+        steps.on("start", () => {
+            socket.emit("start")
+        })
 
         // Pickup: mûrir
         steps.on("pickup", () => {
