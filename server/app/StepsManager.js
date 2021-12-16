@@ -9,7 +9,6 @@ export default class StepsManager extends EventEmitter {
         'start',
         'pickup',
         'sun rises',
-        'before sun bath',
         'sun bath',
         'get on',
         'press',
