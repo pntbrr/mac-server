@@ -15,6 +15,11 @@ export default function setUpAnimation (socket, steps, { watch }) {
     const playSundialAnim = (duration, loops) => {
         socket.emit('playSundialAnim', { duration, loops })
     }
+    steps.on("sun rises", direction => {
+        if (direction > 0) {
+            playSundialAnim(state.sunRise.arcDuration.value ,1)
+        }
+    })
     steps.on("sun bath", direction => {
         if (direction > 0) {
             playSundialAnim(state.sunBath.animationDuration.value,state.sunBath.loops.value)

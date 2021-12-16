@@ -17,19 +17,16 @@ const animLoaded = controller => {
 store.$onAction(({name, after}) => {
   after(() => {
     if (name === 'playSundial') {
+      console.log('hooo ?')
       anim.value.goToAndPlay(0)
       setTimeout(() => anim.value.pause(), store.sundialAnim.duration * 1000)
     }
   })
 })
-const showSundial = computed(() =>
-    ['sun bath', 'before sun bath'].includes(store.currentStep)
-)
 </script>
 
 <template>
   <LottieAnimation
-      v-show="showSundial"
       ref="lottie"
       class="lottie"
       path="/lottiefiles/sundial.json"
@@ -38,7 +35,7 @@ const showSundial = computed(() =>
       :speed="animSpeed"
       @AnimControl="animLoaded"
   />
-  <div v-if="store.currentStep === 'sun rises'" class="lightpanel"></div>
+<!--  <div v-if="store.currentStep === 'sun rises'" class="lightpanel"></div>-->
 </template>
 
 <style>
