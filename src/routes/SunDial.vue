@@ -54,7 +54,7 @@ body {
   width: 100%;
   height: 100%;
   background-color: #000;
-  animation: sunLight 10s linear;
+  animation: sunLight 20s linear;
 }
 
 @keyframes sunLight {

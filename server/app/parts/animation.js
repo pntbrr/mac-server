@@ -17,7 +17,10 @@ export default function setUpAnimation (socket, steps, { watch }) {
     }
     steps.on("sun rises", direction => {
         if (direction > 0) {
-            playSundialAnim(state.sunRise.arcDuration.value ,1)
+            setTimeout(() => {
+                playSundialAnim(state.sunRise.arcDuration.v ,1)
+
+            }, state.sunRise.liftOffDuration.v * 1000)
         }
     })
     steps.on("sun bath", direction => {
