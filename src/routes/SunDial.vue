@@ -4,7 +4,7 @@
 import LottieAnimation from '../components/lib/LottieAnimation.vue'
 import useAnimPlay from '../composables/useAnimPlay'
 import useStore from '../store'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 const {animSpeed, setAnimController} = useAnimPlay()
 const store = useStore()
@@ -14,17 +14,22 @@ const animLoaded = controller => {
   anim.value = controller
   setAnimController(controller)
 }
-
 store.$onAction(({name, after}) => {
-  if (name === 'playSundial') {
-    anim.value.goToAndPlay(0)
-    setTimeout(() => anim.value.pause(), store.sundialAnim.duration * 1000)
-  }
+  after(() => {
+    if (name === 'playSundial') {
+      anim.value.goToAndPlay(0)
+      setTimeout(() => anim.value.pause(), store.sundialAnim.duration * 1000)
+    }
+  })
 })
+const showSundial = computed(() =>
+    ['sun bath', 'before sun bath'].includes(store.currentStep)
+)
 </script>
 
 <template>
   <LottieAnimation
+      v-show="showSundial"
       ref="lottie"
       class="lottie"
       path="/lottiefiles/sundial.json"
@@ -33,22 +38,43 @@ store.$onAction(({name, after}) => {
       :speed="animSpeed"
       @AnimControl="animLoaded"
   />
-  <div
-      class="cache-click"
-  >
-  </div>
+  <div v-if="store.currentStep === 'sun rises'" class="lightpanel"></div>
 </template>
 
 <style>
+body {
+  background-color: #000;
+}
 .lottie {
   width: 100vw;
   height: 100vh;
 }
-.cache-click {
+
+.lightpanel {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  background-color: #000;
+  animation: sunLight 10s linear;
+}
+
+@keyframes sunLight {
+  from {
+    background-color: #000;
+  }
+  10% {
+    background-color: #0b0e1e;
+  }
+  50% {
+    background-color: #fff5eb;
+  }
+  90% {
+    background-color: #1e0a03;
+  }
+  to {
+    background-color: #000;
+  }
 }
 </style>

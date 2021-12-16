@@ -1,9 +1,8 @@
 <script setup>
-
 </script>
 <template>
   <main>
-    <RouterView />
+    <router-view />
   </main>
 </template>
 

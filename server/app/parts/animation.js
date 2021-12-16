@@ -7,6 +7,10 @@ import state from '../state'
  */
 export default function setUpAnimation (socket, steps, { watch }) {
 
+    const updateStep = () => socket.emit("step", steps.currentStep)
+    steps.on("step", updateStep)
+    updateStep()
+
     // Sundial
     const playSundialAnim = (duration, loops) => {
         socket.emit('playSundialAnim', { duration, loops })

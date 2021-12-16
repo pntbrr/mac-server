@@ -3,8 +3,6 @@ import useStore, { pinia } from '../store'
 
 const animSpeed = ref(0)
 
-
-
 export default function useAnimPlay() {
     const store = useStore(pinia)
     let animDuration

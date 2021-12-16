@@ -2,9 +2,9 @@ import { ref } from '../lib/reactive.js'
 
 const state = {
     sunRise: {
-        liftOffDuration: ref(7),
-        arcDuration: ref(5.45),
-        landingDuration: ref(10),
+        liftOffDuration: ref(5),
+        arcDuration: ref(8),
+        landingDuration: ref(7),
     },
     sunBath: {
         animationDuration: ref(20),

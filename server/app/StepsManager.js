@@ -5,16 +5,17 @@ const log = console.log
 
 export default class StepsManager extends EventEmitter {
     steps = [
-        "idle",
-        "start",
-        "pickup",
-        "sun rises",
-        "sun bath",
-        "get on",
-        "press",
-        "break",
-        "shake",
-        "pour water"
+        'idle',
+        'start',
+        'pickup',
+        'sun rises',
+        'before sun bath',
+        'sun bath',
+        'get on',
+        'press',
+        'idle3',
+        'shake',
+        'pour water'
     ]
     #_currentStepIndex = 0
     get currentStepIndex() {
