@@ -40,13 +40,16 @@ export default function setUpSpheros(socket, steps, {watch}) {
         })
 
         // Get On: Détecter on monte sur la presse
+        steps.on('get on', () => {
+            socket.emit('beforePressed')
+        })
         let received = false
         socket.on('get on', () => {
             if (steps.currentStep === 'get on') {
                 if (!received) {
                     received = true
                     setTimeout(() => {
-                        steps.nextStep()
+                        steps.goTo('press')
                         received = false
                     }, 2000)
                 }
@@ -54,24 +57,30 @@ export default function setUpSpheros(socket, steps, {watch}) {
         })
 
         // Pressing: on est en train de presser.
+        let pressedInterval
         steps.on('press', () => {
             let ledsOff = 0
-            const pressedInterval = setInterval(() => {
-                if (state.press.isMoving.value) {
-                    ledsOff++
-                    log(ledsOff)
-                    socket.emit('pressed')
-                }
+            clearInterval(pressedInterval)
+            pressedInterval = setInterval(() => {
                 if (ledsOff >= 64) {
                     clearInterval(pressedInterval)
                     state.press.isMoving.value = false
                     steps.nextStep()
+                    return
+                }
+                if (state.press.isMoving.value) {
+                    ledsOff++
+                    log(ledsOff)
+                    socket.emit('pressed')
                 }
             }, (state.press.fullPressDuration * 1000) / 64) // 64: number of leds in sphero
         })
         socket.on('pressing', (movingVal) => {
             if (movingVal && steps.currentStep !== 'press') return
             state.press.isMoving.value = !!movingVal
+        })
+        steps.on('idle3', () => {
+            clearInterval(pressedInterval)
         })
 
         socket.on('shaking', (shakeVal) => {
