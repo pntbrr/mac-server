@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events'
 import chalk from 'chalk'
 import stepsEvents from 'nodemon'
-const log = console.log
+import { log } from './dashboard'
 
 export default class StepsManager extends EventEmitter {
     steps = [
@@ -33,7 +33,7 @@ export default class StepsManager extends EventEmitter {
     goTo(step) {
         const stepIndex = this.steps.indexOf(step)
         if (stepIndex === -1) return false
-        console.log(step)
+        log(step)
         this.currentStepIndex = stepIndex
     }
 

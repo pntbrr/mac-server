@@ -16,6 +16,14 @@ const state = {
     },
     alcohol: {
         gaugeVal: ref(0)
+    },
+    connectedDevices: {
+        spherosb: ref(false),
+        blueTile: ref(false),
+        animations: ref(0),
+        gauge: ref(false),
+        valve: ref(false),
+        drone: ref(false),
     }
 }
 export default state

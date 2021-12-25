@@ -11,7 +11,6 @@ export default function setUpGauge (socket, steps, { watch }) {
         if(steps.currentStep === 'shake' || steps.currentStep === 'pour water') {
             newVal = Math.round(newVal * 100) / 1000
             socket.emit("setGauge", newVal)
-            console.log("newVal", newVal)
         }
     }
     setTimeout(() => {

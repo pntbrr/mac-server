@@ -1,9 +1,8 @@
 import { Socket } from 'socket.io'
 import chalk from "chalk";
 
-const log = console.log
-
 import state from '../state'
+import { log } from '../dashboard'
 
 /**
  * @param {Socket} socket
@@ -16,9 +15,16 @@ export default function setUpSpheros(socket, steps, {watch}) {
     steps.on("step", updateStep)
     updateStep()
 
+    socket.on('disconnect', () => {
+        state.connectedDevices.spherosb.value = false
+        state.connectedDevices.blueTile.value = false
+
+    })
     // spheros
     socket.on("spherosConnected", () => {
         log(chalk.bgBlue("[DEVICE:spheros] All spheros connected"))
+        state.connectedDevices.spherosb.value = true
+
         steps.on("start", () => {
             socket.emit("start")
         })
@@ -53,7 +59,7 @@ export default function setUpSpheros(socket, steps, {watch}) {
             const pressedInterval = setInterval(() => {
                 if (state.press.isMoving.value) {
                     ledsOff++
-                    console.log(ledsOff)
+                    log(ledsOff)
                     socket.emit('pressed')
                 }
                 if (ledsOff >= 64) {
@@ -76,13 +82,13 @@ export default function setUpSpheros(socket, steps, {watch}) {
                     state.alcohol.gaugeVal.value = 9
                     steps.nextStep()
                 }
-                console.log('La jauge est à', state.alcohol.gaugeVal.value.toFixed(2))
             }
         })
     })
 
     socket.on("bluetileConnected", () => {
         log(chalk.bgBlue("[DEVICE:spheros] Bluetile connected"))
+        state.connectedDevices.blueTile.value = true
 
         socket.on('pouring', (pourVal) => {
             if (steps.currentStep === 'pour water' && state.alcohol.gaugeVal.value > 6) {
@@ -106,9 +112,8 @@ export default function setUpSpheros(socket, steps, {watch}) {
                         pourVal = 0
                         break;
                 }
-                console.log("pourVal", pourVal)
+                log("pourVal", pourVal)
                 state.alcohol.gaugeVal.value -= pourVal
-                console.log('La jauge est à', state.alcohol.gaugeVal.value.toFixed(2))
             }
         })
     })

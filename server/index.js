@@ -7,8 +7,8 @@ import { Server } from 'socket.io'
 import PeerTalk from 'peertalk'
 import { createDroneSocket } from './app/droneSocket.js'
 import createManager from './app/manager.js'
+import { log } from './app/dashboard'
 
-const log = console.log
 const app = express();
 const server = http.createServer(app);
 
@@ -50,5 +50,5 @@ peerTalk.then((device) => {
 });
 
 server.listen(3000, () => {
-    console.log('listening on *:3000');
+    log('listening on *:3000');
 });
