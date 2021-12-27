@@ -131,7 +131,7 @@ export default function createDashboard(stepsManager) {
         top: '25%',
         left: '50%',
         width: '25%',
-        height: '25%',
+        height: '25%+1',
         tags: true,
         border: {
             type: 'line'
@@ -153,7 +153,24 @@ export default function createDashboard(stepsManager) {
             align: 'center,'
         }
     })
+    const pourKey = blessed.box({
+        left: 1,
+        bottom: 0,
+        content: ' T',
+        width: 5,
+        height: 3,
+        border: {
+            type: 'line'
+        },
+        style: {
+            fg: '#fce14b',
+            border: {
+                fg: '#fce14b'
+            },
+        }
+    })
     pourBox.append(pourTex)
+    pourBox.append(pourKey)
     screen.append(pourBox)
     watch(state.press.isMoving, (moving) => {
         pourTex.setContent(moving
@@ -168,7 +185,7 @@ export default function createDashboard(stepsManager) {
         top: '25%',
         left: '75%',
         width: '25%',
-        height: '25%',
+        height: '25%+1',
         tags: true,
         border: {
             type: 'line'
@@ -213,8 +230,42 @@ export default function createDashboard(stepsManager) {
             align: 'center,'
         }
     })
+    const gaugeKey1 = blessed.box({
+        left: 1,
+        bottom: 0,
+        content: ' ▲',
+        width: 5,
+        height: 3,
+        border: {
+            type: 'line'
+        },
+        style: {
+            fg: '#fce14b',
+            border: {
+                fg: '#fce14b'
+            },
+        }
+    })
+    const gaugeKey2 = blessed.box({
+        left: 6,
+        bottom: 0,
+        content: ' ▼',
+        width: 5,
+        height: 3,
+        border: {
+            type: 'line'
+        },
+        style: {
+            fg: '#fce14b',
+            border: {
+                fg: '#fce14b'
+            },
+        }
+    })
     gaugeBox.append(gaugeProgress)
     gaugeBox.append(gaugeText)
+    gaugeBox.append(gaugeKey1)
+    gaugeBox.append(gaugeKey2)
     screen.append(gaugeBox)
     watch(state.alcohol.gaugeVal, val => {
         val = Math.round(val * 100) / 10
@@ -288,27 +339,42 @@ export default function createDashboard(stepsManager) {
             logBox.height = '50%'
 
             stepsBox.top = 0
-            stepsBox.left = '50%'
+            stepsBox.left = '50%-5'
+            stepsBox.width = '50%+5'
+            stepsBox.height = '25%'
 
             pourBox.top = '25%'
-            pourBox.left = '50%'
+            pourBox.left = '50%-5'
 
             gaugeBox.top = '25%'
-            gaugeBox.left = '75%'
+            gaugeBox.left = '75%-5'
+            gaugeBox.width = '25%+5'
+            gaugeBox.heigt = '25%+1'
+
+            devicesBox.width = "50%-5"
+            devicesBox.height = "50%"
+            gaugeBox.height = '25%+1'
         } else {
             logBox.bottom = 0
             logBox.left = '50%'
             logBox.width = '50%'
             logBox.height = '100%'
 
-            stepsBox.top = '50%'
+            stepsBox.top = '25%'
             stepsBox.left = 0
+            stepsBox.width = '50%'
+            stepsBox.height = '30%'
 
-            pourBox.top = '75%'
+            pourBox.top = '55%-1'
             pourBox.left = 0
 
-            gaugeBox.top = '75%'
+            gaugeBox.top = '55%-1'
             gaugeBox.left = '25%'
+            gaugeBox.width = '25%'
+            gaugeBox.height = '45%+2'
+
+            devicesBox.width = "50%"
+            devicesBox.height = "25%"
         }
         screen.render();
     }
