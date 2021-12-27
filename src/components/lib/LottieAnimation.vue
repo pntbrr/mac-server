@@ -46,6 +46,11 @@ export default {
       required: false,
       default: 0,
     },
+    segment: {
+      type: Array,
+      required: false,
+      default: null
+    }
   },
   data: () => ({
     name: 'lottieAnimation',
@@ -65,6 +70,9 @@ export default {
     speed(newVal) {
       this.anim.setSpeed(this.speed)
     },
+    segment(newVal) {
+      this.anim?.playSegments(newVal)
+    }
   },
   mounted() {
     this.init()
@@ -115,6 +123,9 @@ export default {
         this.anim.loop = false
         this.anim.autoplay = false
         this.executeLoop()
+      }
+      if (this.segment) {
+        this.anim.playSegments(this.segment, true)
       }
     },
     getRandomInt(min, max) {
