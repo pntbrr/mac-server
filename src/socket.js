@@ -1,8 +1,9 @@
 import { io } from 'socket.io-client'
 import useStore, { pinia } from './store'
+import { Capacitor } from '@capacitor/core'
 
 
-const socket = import.meta.env.DEV
+const socket = import.meta.env.DEV || Capacitor.isNativePlatform()
     ? io("http://10.3.141.100:3000")
     : io()
 

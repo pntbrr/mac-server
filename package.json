@@ -11,6 +11,9 @@
     "dev:server": "nodemon --experimental-specifier-resolution=node server/"
   },
   "dependencies": {
+    "@capacitor/cli": "^3.3.3",
+    "@capacitor/core": "^3.3.3",
+    "@capacitor/ios": "^3.3.3",
     "axios": "^0.24.0",
     "chalk": "^5.0.0",
     "connect-history-api-fallback": "^1.6.0",

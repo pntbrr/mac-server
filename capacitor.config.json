@@ -1,0 +1,6 @@
+{
+  "appId": "com.pntbrr.animations",
+  "appName": "animations",
+  "webDir": "dist",
+  "bundledWebRuntime": false
+}
