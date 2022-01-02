@@ -5,6 +5,7 @@ import useDashboardSocket from '../composables/useDashboardSocket'
 import { ref, watch } from 'vue'
 import Logs from '../components/dashboard/Logs.vue'
 import Steps from '../components/dashboard/Steps.vue'
+import Devices from '../components/dashboard/Devices.vue'
 
 const {serverState} = storeToRefs(useStore())
 
@@ -12,8 +13,9 @@ useDashboardSocket()
 </script>
 <template>
   <main class="bg-base-100 h-screen p-4 grid gap-6 grid-dashboard">
-    <Logs :logs="serverState.logs" class="area-logs" />
+    <Devices :devices="serverState.connectedDevices" class="area-devices" />
     <Steps class="area-steps" />
+    <Logs :logs="serverState.logs" class="area-logs" />
   </main>
 </template>
 <style>
@@ -23,8 +25,9 @@ useDashboardSocket()
   grid-template-areas:
       "devices steps logs logs"
       "devices steps logs logs"
-      "devices steps logs logs"
-      "pouring gauge logs logs";
+      "gauge   steps logs logs"
+      "gauge pouring logs logs"
+  ;
 }
 
 .area-devices {
