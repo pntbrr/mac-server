@@ -3,23 +3,15 @@ import { storeToRefs } from 'pinia'
 import useStore from '../store'
 import useDashboardSocket from '../composables/useDashboardSocket'
 import { ref, watch } from 'vue'
+import Logs from '../components/dashboard/Logs.vue'
 
 const {serverState} = storeToRefs(useStore())
-
-const logsView = ref(null)
-
-watch(serverState, () => {
-  logsView.value.scrollTop = logsView.value.scrollHeight;
-})
 
 useDashboardSocket()
 </script>
 <template>
   <main class="bg-base-100 h-screen p-4 grid gap-6 grid-dashboard">
-    <section class="mockup-code area-logs h-full flex flex-col">
-      <code class="px-4 block overflow-y-scroll flex-shrink" v-html="serverState.logs" ref="logsView">
-      </code>
-    </section>
+    <Logs :logs="serverState.logs" class="area-logs" />
   </main>
 </template>
 <style>
