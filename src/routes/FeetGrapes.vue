@@ -6,6 +6,9 @@ import gsap from 'gsap'
 import LottieAnimation from '../components/lib/LottieAnimation.vue'
 import useStore from '../store'
 import { storeToRefs } from 'pinia'
+import useFeetGrapesSocket from '../composables/useFeetGrapesSocket'
+
+useFeetGrapesSocket()
 
 const {feetAnimSpeed: speed, currentStep} = storeToRefs(useStore())
 const tweenedSpeed = ref(0)

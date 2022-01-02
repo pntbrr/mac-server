@@ -4,7 +4,10 @@
 import LottieAnimation from '../components/lib/LottieAnimation.vue'
 import useAnimPlay from '../composables/useAnimPlay'
 import useStore from '../store'
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
+import useSunDialSocket from '../composables/useSunDialSocket'
+
+useSunDialSocket()
 
 const {animSpeed, setAnimController} = useAnimPlay()
 const store = useStore()
@@ -17,7 +20,6 @@ const animLoaded = controller => {
 store.$onAction(({name, after}) => {
   after(() => {
     if (name === 'playSundial') {
-      console.log('hooo ?')
       anim.value.goToAndPlay(0)
       setTimeout(() => anim.value.pause(), store.sundialAnim.duration * 1000)
     }

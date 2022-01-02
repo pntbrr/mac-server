@@ -292,30 +292,33 @@ export default function createDashboard(stepsManager) {
     })
     screen.append(devicesBox)
     const updateDevices = () => {
-        let devicesText = '    Spheros: ' + (state.connectedDevices.spherosb.v
+        let devicesText = ' {bold}Devices:{/bold}'
+        devicesText += '\n     Spheros: ' + (state.connectedDevices.spherosb.v
             ? chalk.black.bgBlue(' Connected ')
             : chalk.black.bgRed(' Not Connected '))
 
-        devicesText += '\n   BlueTile: ' + (state.connectedDevices.blueTile.v
+        devicesText += '\n    BlueTile: ' + (state.connectedDevices.blueTile.v
             ? chalk.black.bgBlue(' Connected ')
             : chalk.black.bgRed(' Not Connected '))
 
-        let animationColor = 'bgRed'
-        if (state.connectedDevices.animations.v === 1) {
-            animationColor = 'bgYellow'
-        }
-        if (state.connectedDevices.animations.v === 2) {
-            animationColor = 'bgGreen'
-        }
-        devicesText += '\n Animations: ' + chalk[animationColor].black(` ${state.connectedDevices.animations.v} connected `)
+        devicesText += '\n       Gauge: ' + (state.connectedDevices.gauge.v
+            ? chalk.black.bgGreen(' Connected ')
+            : chalk.black.bgRed(' Not Connected '))
+        devicesText += '\n       Valve: ' + (state.connectedDevices.valve.v
+            ? chalk.black.bgGreen(' Connected ')
+            : chalk.black.bgRed(' Not Connected '))
+        devicesText += '\n       Drone: ' + (state.connectedDevices.drone.v
+            ? chalk.black.bgGreen(' Connected ')
+            : chalk.black.bgRed(' Not Connected '))
 
-        devicesText += '\n      Gauge: ' + (state.connectedDevices.gauge.v
+        devicesText += '\n\n{bold} Animations:{/bold}'
+        devicesText += '\n PressScreen: ' + (state.connectedDevices.animationPress.v
             ? chalk.black.bgGreen(' Connected ')
             : chalk.black.bgRed(' Not Connected '))
-        devicesText += '\n      Valve: ' + (state.connectedDevices.valve.v
+        devicesText += '\n     Sundial: ' + (state.connectedDevices.animationSunDial.v
             ? chalk.black.bgGreen(' Connected ')
             : chalk.black.bgRed(' Not Connected '))
-        devicesText += '\n      Drone: ' + (state.connectedDevices.drone.v
+        devicesText += '\n\n   Dashboard: ' + (state.connectedDevices.dashboard.v
             ? chalk.black.bgGreen(' Connected ')
             : chalk.black.bgRed(' Not Connected '))
 
@@ -328,7 +331,9 @@ export default function createDashboard(stepsManager) {
     watch(state.connectedDevices.drone, updateDevices)
     watch(state.connectedDevices.blueTile, updateDevices)
     watch(state.connectedDevices.gauge, updateDevices)
-    watch(state.connectedDevices.animations, updateDevices)
+    watch(state.connectedDevices.animationSunDial, updateDevices)
+    watch(state.connectedDevices.animationPress, updateDevices)
+    watch(state.connectedDevices.dashboard, updateDevices)
 
 
     const responsive = () => {
@@ -360,10 +365,10 @@ export default function createDashboard(stepsManager) {
             logBox.width = '50%'
             logBox.height = '100%'
 
-            stepsBox.top = '25%'
+            stepsBox.top = '30%'
             stepsBox.left = 0
             stepsBox.width = '50%'
-            stepsBox.height = '30%'
+            stepsBox.height = '25%'
 
             pourBox.top = '55%-1'
             pourBox.left = 0
@@ -374,7 +379,7 @@ export default function createDashboard(stepsManager) {
             gaugeBox.height = '45%+2'
 
             devicesBox.width = "50%"
-            devicesBox.height = "25%"
+            devicesBox.height = "30%"
         }
         screen.render();
     }

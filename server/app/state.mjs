@@ -20,10 +20,12 @@ const state = {
     connectedDevices: {
         spherosb: ref(false),
         blueTile: ref(false),
-        animations: ref(0),
         gauge: ref(false),
         valve: ref(false),
         drone: ref(false),
+        animationPress: ref(false),
+        animationSunDial: ref(false),
+        dashboard: ref(false),
     },
     logs: ref(''),
 }
