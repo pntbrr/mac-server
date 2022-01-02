@@ -6,6 +6,7 @@ import FeetGrapes from './routes/FeetGrapes.vue'
 import Sundial from './routes/Sundial.vue'
 import { linkSocketToStore } from './socket'
 import { pinia } from './store'
+import './assets/styles.css'
 
 const routes = [
     { path: '/', component: Home },

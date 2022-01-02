@@ -1,6 +1,6 @@
 import blessed from 'neo-blessed'
-import state from './state'
-import { watch } from '../lib/reactive'
+import state from './state.mjs'
+import { watch } from '../lib/reactive.mjs'
 import chalk from 'chalk'
 
 let dashboard

@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events'
 import chalk from 'chalk'
 import stepsEvents from 'nodemon'
-import { log } from './dashboard'
+import { log } from './dashboard.mjs'
 
 export default class StepsManager extends EventEmitter {
     steps = [

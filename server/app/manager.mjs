@@ -1,15 +1,15 @@
 import { Socket } from 'socket.io'
 import chalk from 'chalk'
-import StepsManager from './StepsManager.js'
+import StepsManager from './StepsManager.mjs'
 
-import setUpDrone from './parts/drone.js'
-import setUpValve from './parts/valve.js'
-import setUpSpheros from './parts/spheros.js'
-import setUpAnimation from './parts/animation.js'
-import { watcher } from '../lib/reactive'
-import state from './state'
-import setUpGauge from './parts/gauge'
-import createDashboard, { log } from './dashboard'
+import setUpDrone from './parts/drone.mjs'
+import setUpValve from './parts/valve.mjs'
+import setUpSpheros from './parts/spheros.mjs'
+import setUpAnimation from './parts/animation.mjs'
+import { watcher } from '../lib/reactive.mjs'
+import state from './state.mjs'
+import setUpGauge from './parts/gauge.mjs'
+import createDashboard, { log } from './dashboard.mjs'
 
 
 export default function createManager () {

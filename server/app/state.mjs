@@ -1,4 +1,4 @@
-import { ref } from '../lib/reactive.js'
+import { ref } from '../lib/reactive.mjs'
 
 const state = {
     sunRise: {

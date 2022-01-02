@@ -1,5 +1,5 @@
 import { Socket } from 'socket.io'
-import state from '../state'
+import state from '../state.mjs'
 /**
  * @param {Socket} socket
  * @param {StepsContext} steps

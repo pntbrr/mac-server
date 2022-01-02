@@ -5,9 +5,9 @@ import http from 'http'
 import { Server } from 'socket.io'
 
 import PeerTalk from 'peertalk'
-import { createDroneSocket } from './app/droneSocket.js'
-import createManager from './app/manager.js'
-import { log } from './app/dashboard'
+import { createDroneSocket } from './app/droneSocket.mjs'
+import createManager from './app/manager.mjs'
+import { log } from './app/dashboard.mjs'
 
 const app = express();
 const server = http.createServer(app);
