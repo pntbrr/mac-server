@@ -8,7 +8,4 @@ export default function () {
     socket.on('setFeetAnimSpeed', (val) => {
         store.feetAnimSpeed = val
     })
-    onBeforeRouteLeave(() => {
-        socket.disconnect()
-    })
 }

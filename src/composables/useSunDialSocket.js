@@ -7,8 +7,4 @@ export default function () {
     const socket = useSocket('animationSunDial')
 
     socket.on('playSundialAnim', store.playSundial)
-
-    onBeforeRouteLeave(() => {
-        socket.disconnect()
-    })
 }

@@ -11,6 +11,27 @@ const useStore = defineStore({
             duration: 0,
             loops: 0,
         },
+        serverState: {
+            sunBath: {
+                press: {
+                    isMoving: false,
+                },
+                alcohol: {
+                    gaugeVal: 0,
+                },
+                connectedDevices: {
+                    spherosb: false,
+                    blueTile: false,
+                    gauge: false,
+                    valve: false,
+                    drone: false,
+                    animationPress: false,
+                    animationSunDial: false,
+                    dashboard: false,
+                },
+                logs: '',
+            }
+        }
     }),
     actions: {
         playSundial({ duration, loops }) {

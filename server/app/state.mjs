@@ -1,4 +1,5 @@
-import { ref } from '../lib/reactive.mjs'
+import { isRef, ref, watch } from '../lib/reactive.mjs'
+import { EventEmitter } from 'events'
 
 const state = {
     sunRise: {
@@ -29,10 +30,41 @@ const state = {
     },
     logs: ref(''),
 }
+
 export function log(...data) {
     data.forEach(d => {
-        state.logs.value += d.toString()
+        state.logs.value += d
         state.logs.value += "\n"
     })
 }
+
+function iterateState(func, obj = state) {
+    for (let property in obj) {
+        if (obj.hasOwnProperty(property)) {
+            if (typeof obj[property] == "object")
+                if (isRef(obj[property])) {
+                    func(obj[property], property)
+                } else {
+                    iterateState(func, obj[property]);
+                } else {
+                func(obj)
+            }
+        }
+    }
+}
+
+
+const stateWatcher = new EventEmitter()
+const stateUpdated = () => stateWatcher.emit('update')
+
+iterateState((prop, key) => {
+    if (isRef(prop)) {
+        watch(prop, stateUpdated)
+    }
+})
+
+export function watchState(callback) {
+    stateWatcher.on('update', callback)
+}
+
 export default state

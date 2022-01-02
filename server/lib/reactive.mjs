@@ -1,4 +1,5 @@
 import { EventEmitter } from 'events'
+import cloneDeepWith from 'lodash/cloneDeepWith'
 
 class Ref extends EventEmitter {
     #value
@@ -70,4 +71,14 @@ export const watcher = () => {
         watch: watchLocal,
         unWatchAll
     }
+}
+
+export const isRef = (obj) => obj instanceof Ref
+
+export const unwrap = obj => {
+    return cloneDeepWith(obj, val => {
+        if (isRef(val)) {
+            return val.v
+        }
+    })
 }

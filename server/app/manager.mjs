@@ -10,6 +10,7 @@ import { watcher } from '../lib/reactive.mjs'
 import state, { log } from './state.mjs'
 import setUpGauge from './parts/gauge.mjs'
 import createDashboard from './dashboard.mjs'
+import setUpDashboard from './parts/dashboard.mjs'
 
 
 export default function createManager () {
@@ -48,6 +49,9 @@ export default function createManager () {
                 break;
             case "gauge":
                 setUpGauge(socket, stepsContext, w)
+                break;
+            case "dashboard":
+                setUpDashboard(socket, stepsContext, w)
                 break;
             default:
                 if (name.startsWith('animation')) {

@@ -1,6 +1,7 @@
 import { Capacitor } from '@capacitor/core'
 import { io } from 'socket.io-client'
 import useStore, { pinia } from '../store'
+import { onBeforeRouteLeave } from 'vue-router'
 
 export default function useSocket(deviceName) {
     const store = useStore(pinia)
@@ -14,6 +15,9 @@ export default function useSocket(deviceName) {
         socket.on('step', (step) => {
             store.currentStep = step
         })
+    })
+    onBeforeRouteLeave(() => {
+        socket.disconnect()
     })
     return socket
 }

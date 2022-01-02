@@ -4,7 +4,11 @@ module.exports = {
     "./src/**/*.{vue,js,ts,css}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'code': 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace'
+      }
+    },
   },
   plugins: [
     require('daisyui'),
