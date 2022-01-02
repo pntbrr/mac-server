@@ -1,8 +1,7 @@
 import { Socket } from 'socket.io'
 import chalk from "chalk";
 
-import state from '../state.mjs'
-import { log } from '../dashboard.mjs'
+import state, { log } from '../state.mjs'
 
 /**
  * @param {Socket} socket

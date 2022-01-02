@@ -7,7 +7,13 @@ import { Server } from 'socket.io'
 import PeerTalk from 'peertalk'
 import { createDroneSocket } from './app/droneSocket.mjs'
 import createManager from './app/manager.mjs'
-import { log } from './app/dashboard.mjs'
+import { log } from './app/state.mjs'
+
+// hook console.log
+console.nativeLog = console.log.bind(console)
+console.log = log
+
+console.log('starting...')
 
 const app = express();
 const server = http.createServer(app);

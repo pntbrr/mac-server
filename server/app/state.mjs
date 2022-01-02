@@ -24,6 +24,13 @@ const state = {
         gauge: ref(false),
         valve: ref(false),
         drone: ref(false),
-    }
+    },
+    logs: ref(''),
+}
+export function log(...data) {
+    data.forEach(d => {
+        state.logs.value += d.toString()
+        state.logs.value += "\n"
+    })
 }
 export default state

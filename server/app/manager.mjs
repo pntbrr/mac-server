@@ -7,9 +7,9 @@ import setUpValve from './parts/valve.mjs'
 import setUpSpheros from './parts/spheros.mjs'
 import setUpAnimation from './parts/animation.mjs'
 import { watcher } from '../lib/reactive.mjs'
-import state from './state.mjs'
+import state, { log } from './state.mjs'
 import setUpGauge from './parts/gauge.mjs'
-import createDashboard, { log } from './dashboard.mjs'
+import createDashboard from './dashboard.mjs'
 
 
 export default function createManager () {

@@ -387,13 +387,15 @@ export default function createDashboard(stepsManager) {
     }
 }
 
-export function log(...data) {
+watch(state.logs, (newVal, oldVal) => {
     if (dashboard) {
         const {screen, logBox} = dashboard
-        logBox.pushLine(data[0].toString())
+        logBox.setContent(newVal)
         logBox.setScrollPerc(100)
         screen.render()
     } else {
-        console.log(...data)
+        console.nativeLog(
+            newVal.replace(oldVal, '')
+        )
     }
-}
+})
