@@ -4,7 +4,7 @@ import { Capacitor } from '@capacitor/core'
 
 
 const socket = import.meta.env.DEV || Capacitor.isNativePlatform()
-    ? io("http://10.3.141.100:3000")
+    ? io(import.meta.env.SERVER_URL)
     : io()
 
 socket.on('connect', () => {
