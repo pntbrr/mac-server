@@ -13,7 +13,7 @@ import { log } from './app/state.mjs'
 console.nativeLog = console.log.bind(console)
 console.log = log
 
-console.log('starting...')
+console.log('Starting server...')
 
 const app = express();
 const server = http.createServer(app);
