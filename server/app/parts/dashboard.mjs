@@ -28,4 +28,23 @@ export default function setUpDashboard (socket, steps, { watch }) {
         updateState()
     })
     updateState()
+
+    socket.on('next step', () => {
+        steps.nextStep()
+    })
+    socket.on('prev step', () => {
+        steps.prevStep()
+    })
+    socket.on('toggle press', () => {
+        state.press.isMoving.value = !state.press.isMoving.value
+    })
+    socket.on('gauge up', () => {
+        state.alcohol.gaugeVal.value += 0.2
+    })
+    socket.on('gauge down', () => {
+        state.alcohol.gaugeVal.value -= 0.2
+    })
+    socket.on('gauge val', percentage => {
+        state.alcohol.gaugeVal.value = percentage / 10
+    })
 }

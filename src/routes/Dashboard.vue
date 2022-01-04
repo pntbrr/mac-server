@@ -11,15 +11,35 @@ import Gauge from '../components/dashboard/Gauge.vue'
 
 const {serverState} = storeToRefs(useStore())
 
-const {socketConnected} = useDashboardSocket()
+const {
+  socketConnected,
+  togglePress,
+  prevStep,
+  nextStep,
+  gaugeUp,
+  gaugeDown,
+  gaugeVal,
+} = useDashboardSocket()
+
+
 </script>
 <template>
   <main v-if="socketConnected" class="bg-base-100 h-screen p-4 grid gap-6 grid-dashboard">
-    <Devices :devices="serverState.connectedDevices" class="area-devices" />
-    <Steps class="area-steps" />
-    <Gauge :val="serverState.alcohol.gaugeVal * 10" class="area-gauge" />
-    <Press :pressing="serverState.press.isMoving" class="area-pouring" />
-    <Logs :logs="serverState.logs" class="area-logs" />
+    <Devices :devices="serverState.connectedDevices" class="area-devices"/>
+    <Steps
+        class="area-steps"
+        @prev-step="prevStep"
+        @next-step="nextStep"
+    />
+    <Gauge
+        :val="serverState.alcohol.gaugeVal * 10"
+        class="area-gauge"
+        @gauge-up="gaugeUp"
+        @gauge-down="gaugeDown"
+        @gauge-val="gaugeVal"
+    />
+    <Press :pressing="serverState.press.isMoving" class="area-pouring" @toggle="togglePress"/>
+    <Logs :logs="serverState.logs" class="area-logs"/>
   </main>
   <main v-else class="bg-base-100 h-screen p-12 text-center">Connexion en cours...</main>
 </template>
@@ -33,8 +53,7 @@ const {socketConnected} = useDashboardSocket()
       "devices steps logs"
       "gauge   steps logs"
       "gauge   steps logs"
-      "gauge pouring logs"
-  ;
+      "gauge pouring logs";
 }
 
 .area-devices {
