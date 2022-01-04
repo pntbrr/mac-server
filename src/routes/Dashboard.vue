@@ -25,15 +25,15 @@ const {socketConnected} = useDashboardSocket()
 </template>
 <style>
 .grid-dashboard {
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: 5fr 4fr 6fr;
   grid-template-rows: repeat(6, 1fr);
   grid-template-areas:
-      "devices steps logs logs"
-      "devices steps logs logs"
-      "devices steps logs logs"
-      "gauge   steps logs logs"
-      "gauge   steps logs logs"
-      "gauge pouring logs logs"
+      "devices steps logs"
+      "devices steps logs"
+      "devices steps logs"
+      "gauge   steps logs"
+      "gauge   steps logs"
+      "gauge pouring logs"
   ;
 }
 
