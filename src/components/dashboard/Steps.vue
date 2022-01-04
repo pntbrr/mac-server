@@ -31,8 +31,8 @@ const currentStepIndex = computed(() => steps.indexOf(currentStep.value))
       </ul>
     </section>
     <section class="flex gap-4">
-      <button class="card btn text-2xl flex-grow">◀︎</button>
-      <button class="card btn text-2xl flex-grow">▶︎︎</button>
+      <button class="card btn text-2xl py-8 flex-grow">◀︎</button>
+      <button class="card btn text-2xl py-8 flex-grow">▶︎︎</button>
     </section>
   </article>
 </template>

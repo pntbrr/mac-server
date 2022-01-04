@@ -4,8 +4,9 @@ import useStore, { pinia } from '../store'
 
 export default function () {
     const store = useStore(pinia)
-    const socket = useSocket('animationPress')
+    const {socket, socketConnected} = useSocket('animationPress')
     socket.on('setFeetAnimSpeed', (val) => {
         store.feetAnimSpeed = val
     })
+    return {socket, socketConnected}
 }

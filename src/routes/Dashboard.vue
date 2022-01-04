@@ -9,14 +9,15 @@ import Devices from '../components/dashboard/Devices.vue'
 
 const {serverState} = storeToRefs(useStore())
 
-useDashboardSocket()
+const {socketConnected} = useDashboardSocket()
 </script>
 <template>
-  <main class="bg-base-100 h-screen p-4 grid gap-6 grid-dashboard">
+  <main v-if="socketConnected" class="bg-base-100 h-screen p-4 grid gap-6 grid-dashboard">
     <Devices :devices="serverState.connectedDevices" class="area-devices" />
     <Steps class="area-steps" />
     <Logs :logs="serverState.logs" class="area-logs" />
   </main>
+  <main v-else class="bg-base-100 h-screen p-12 text-center">Connexion en cours...</main>
 </template>
 <style>
 .grid-dashboard {

@@ -4,7 +4,8 @@ import useStore, { pinia } from '../store'
 
 export default function () {
     const store = useStore(pinia)
-    const socket = useSocket('animationSunDial')
+    const {socket, socketConnected} = useSocket('animationSunDial')
 
     socket.on('playSundialAnim', store.playSundial)
+    return {socket, socketConnected}
 }
