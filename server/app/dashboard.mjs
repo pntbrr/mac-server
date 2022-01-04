@@ -147,7 +147,7 @@ export default function createDashboard(stepsManager) {
         top: 'center',
         left: 'center',
         height: 2,
-        content: 'Not pouring',
+        content: 'Not pressing',
         style: {
             fg: 'green',
             align: 'center,'
@@ -174,8 +174,8 @@ export default function createDashboard(stepsManager) {
     screen.append(pourBox)
     watch(state.press.isMoving, (moving) => {
         pourTex.setContent(moving
-            ? 'Pouring'
-            : 'Not pouring'
+            ? 'Pressing'
+            : 'Not pressing'
         )
         pourTex.style.fg = moving ? 'red' : 'green'
         screen.render()
