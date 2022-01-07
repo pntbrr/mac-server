@@ -8,6 +8,7 @@ import Steps from '../components/dashboard/Steps.vue'
 import Devices from '../components/dashboard/Devices.vue'
 import Press from '../components/dashboard/Press.vue'
 import Gauge from '../components/dashboard/Gauge.vue'
+import useGamePad from '../composables/useGamePad'
 
 const {serverState} = storeToRefs(useStore())
 
@@ -21,11 +22,45 @@ const {
   gaugeVal,
 } = useDashboardSocket()
 
+const {gamePadConnected, onAxis, onButton} = useGamePad()
+onButton(b => {
+  switch (b) {
+    case 14:
+      prevStep()
+      break
+    case 15:
+      nextStep()
+      break
+    case 0:
+      togglePress()
+      break
+    case 1:
+      gaugeVal(0)
+      break
+    case 2:
+      gaugeVal(90)
+      break
+    case 3:
+      gaugeVal(60)
+      break
+
+  }
+})
+onAxis(axis => {
+  const val = -axis[1] * 5
+  if (val !== 0) {
+    gaugeVal((serverState.value.alcohol.gaugeVal * 10) + val)
+  }
+})
+
 
 </script>
 <template>
   <main v-if="socketConnected" class="bg-base-100 h-screen p-4 grid gap-6 grid-dashboard">
-    <Devices :devices="serverState.connectedDevices" class="area-devices"/>
+    <Devices
+        :devices="serverState.connectedDevices"
+        :gamepad-connected="gamePadConnected"
+        class="area-devices"/>
     <Steps
         class="area-steps"
         @prev-step="prevStep"

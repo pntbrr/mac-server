@@ -19,4 +19,10 @@ html, body {
   height: 100%;
 
 }
+.no-scrollbar::-webkit-scrollbar,
+.overflow-y-scroll::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 0;
+  height: 0;
+}
 </style>

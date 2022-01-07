@@ -1,8 +1,8 @@
 <script setup>
 import { toRefs } from 'vue'
 
-const props = defineProps(['devices'])
-const { devices } = toRefs(props)
+const props = defineProps(['devices', 'gamepadConnected'])
+const { devices, gamepadConnected } = toRefs(props)
 
 const deviceName = (name) => {
   if (name === 'spherosb') name = 'spheros bluetooth'
@@ -24,6 +24,12 @@ const connectedColor = (name) => {
     >
       <div class="w-4 h-4 rounded-full mr-2" :class="device ? connectedColor(k) : 'bg-red-600'"></div>
       <div class="capitalize">{{ deviceName(k) }}</div>
+    </div>
+    <div
+        class="flex items-center mt-auto"
+    >
+      <div class="w-4 h-4 rounded-full mr-2" :class="gamepadConnected ? 'bg-blue-600' : 'bg-red-600'"></div>
+      <div>🎮</div>
     </div>
 
   </section>
