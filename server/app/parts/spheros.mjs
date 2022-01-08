@@ -120,7 +120,6 @@ export default function setUpSpheros(socket, steps, {watch}) {
                         pourVal = 0
                         break;
                 }
-                log("pourVal", pourVal)
                 state.alcohol.gaugeVal.value -= pourVal
             }
         })
