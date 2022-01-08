@@ -110,11 +110,9 @@ watch(currentStep, newStep => {
   if (newStep === "get on") {
     fadeOut(bgAudio, 0.5)
     setTimeout(() => fadeIn(fluteAudio, 1), 10000)
-    console.log(fluteAudio.paused)
   }
 
   if (newStep === 'press') {
-    console.log(fluteAudio.paused)
     prepressSpeed.value = 1
     setTimeout(() => {
       console.log('switch')
