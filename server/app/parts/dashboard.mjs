@@ -47,4 +47,7 @@ export default function setUpDashboard (socket, steps, { watch }) {
     socket.on('gauge val', percentage => {
         state.alcohol.gaugeVal.value = percentage / 10
     })
+    socket.on('restart', () => {
+        steps.goTo("start")
+    })
 }

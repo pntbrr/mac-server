@@ -13,6 +13,7 @@
     "@capacitor/cli": "^3.3.3",
     "@capacitor/core": "^3.3.3",
     "@capacitor/ios": "^3.3.3",
+    "@vueuse/core": "^7.5.3",
     "ansi-to-html": "^0.7.2",
     "axios": "^0.24.0",
     "chalk": "^5.0.0",

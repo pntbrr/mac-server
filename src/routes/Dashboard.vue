@@ -9,6 +9,7 @@ import Devices from '../components/dashboard/Devices.vue'
 import Press from '../components/dashboard/Press.vue'
 import Gauge from '../components/dashboard/Gauge.vue'
 import useGamePad from '../composables/useGamePad'
+import { useMagicKeys } from '@vueuse/core'
 
 const {serverState} = storeToRefs(useStore())
 
@@ -20,6 +21,7 @@ const {
   gaugeUp,
   gaugeDown,
   gaugeVal,
+  restart
 } = useDashboardSocket()
 
 const {gamePadConnected, onAxis, onButton} = useGamePad()
@@ -43,6 +45,9 @@ onButton(b => {
     case 3:
       gaugeVal(60)
       break
+    case 9:
+      restart()
+      break
 
   }
 })
@@ -53,10 +58,35 @@ onAxis(axis => {
   }
 })
 
+const { space, right, left, r, t, up, down } = useMagicKeys()
+watch(space, (v) => {
+  if (v) nextStep()
+})
+watch(right, (v) => {
+  if (v) nextStep()
+})
+watch(left, (v) => {
+  if (v) prevStep()
+})
+watch(down, (v) => {
+  if (v) gaugeDown()
+})
+watch(up, (v) => {
+  if (v) gaugeUp()
+})
+watch(r, (v) => {
+  if (v) restart()
+})
+watch(t, (v) => {
+  if (v) togglePress()
+})
 
 </script>
 <template>
-  <main v-if="socketConnected" class="bg-base-100 h-screen p-4 grid gap-6 grid-dashboard">
+  <main
+      v-if="socketConnected"
+      class="bg-base-100 h-screen p-4 grid gap-6 grid-dashboard"
+  >
     <Devices
         :devices="serverState.connectedDevices"
         :gamepad-connected="gamePadConnected"
@@ -65,6 +95,7 @@ onAxis(axis => {
         class="area-steps"
         @prev-step="prevStep"
         @next-step="nextStep"
+        @restart="restart"
     />
     <Gauge
         :val="serverState.alcohol.gaugeVal * 10"

@@ -27,6 +27,9 @@ export default function () {
     const gaugeVal = val => {
         socket.emit('gauge val', val)
     }
+    const restart = () => {
+        socket.emit('restart')
+    }
 
     return {
         socket,
@@ -37,5 +40,6 @@ export default function () {
         gaugeUp,
         gaugeDown,
         gaugeVal,
+        restart
     }
 }
