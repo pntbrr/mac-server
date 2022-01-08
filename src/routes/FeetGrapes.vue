@@ -1,38 +1,20 @@
 <script setup>
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import { computed, ref, watch } from 'vue'
-import gsap from 'gsap'
-import LottieAnimation from '../components/lib/LottieAnimation.vue'
+import { onMounted, ref, watch } from 'vue'
 import useStore from '../store'
 import { storeToRefs } from 'pinia'
 import useFeetGrapesSocket from '../composables/useFeetGrapesSocket'
 
+import prepressVideo from '../assets/video/prepress.mp4'
+import pressVideo from '../assets/video/press.mp4'
+
 useFeetGrapesSocket()
 
-const {feetAnimSpeed: speed, currentStep} = storeToRefs(useStore())
-const tweenedSpeed = ref(0)
-const realSpeed = computed(() => +tweenedSpeed.value.toFixed(2))
-let prevAnim
-watch(speed, (newVal, oldVal) => {
-  let duration = 0.5
-  if (newVal > oldVal) duration = 2
-
-  if (prevAnim) prevAnim.kill()
-  prevAnim = gsap.to(tweenedSpeed, {duration, value: newVal});
-})
-let feetAnim
-const setFeetController = anim => {
-  feetAnim = anim
-}
+const {feetAnimSpeed, currentStep} = storeToRefs(useStore())
+const feetAnim = ref(null)
 
 // pre press
-const prepressSpeed = ref(0)
 const showPrepress = ref(true)
-let prepressAnim
-const setPrepressController = (anim) => {
-  prepressAnim = anim
-}
+const prepressAnim = ref(null)
 watch(currentStep, newStep => {
   if ([
     'idle',
@@ -44,45 +26,71 @@ watch(currentStep, newStep => {
     'press',
   ].includes(newStep)) {
     showPrepress.value = true
-    prepressSpeed.value = 0
-    prepressAnim?.goToAndPlay(0)
-    feetAnim.goToAndPlay(0)
+    prepressAnim.value.playbackRate = 0
+    prepressAnim.value.currentTime = 0
+    prepressAnim.value.play()
+    feetAnim.value.currentTime = 0
+    feetAnim.value.play()
   } else {
     showPrepress.value = false
-    prepressSpeed.value = 0
+    prepressAnim.value.playbackRate = 0
   }
 
   if (newStep === 'press') {
-    prepressSpeed.value = 1
+    prepressAnim.value.playbackRate = 1
     setTimeout(() => {
       console.log('switch')
       showPrepress.value = false
     }, 700)
   }
 })
+const updateVideoSpeed = () => {
+  feetAnim.value.playbackRate = showPrepress.value ? 0 : feetAnimSpeed.value
+}
+onMounted(() => {
+  prepressAnim.value.playbackRate = 0
+  updateVideoSpeed()
+})
+watch(feetAnimSpeed, updateVideoSpeed)
 
 </script>
 
 <template>
-  <LottieAnimation
-      ref="lottie"
+  <video
+      :src="pressVideo"
+      ref="feetAnim"
       class="lottie"
-      path="/lottiefiles/press.json"
-      :auto-play="true"
-      :loop="true"
-      :speed="showPrepress ? 0 : realSpeed"
-      @AnimControl="setFeetController"
-  />
-  <LottieAnimation
+      loop
+      autoplay
+      muted
+  ></video>
+  <video
       v-show="showPrepress"
-      ref="lottie"
+      :src="prepressVideo"
+      ref="prepressAnim"
       class="lottie"
-      path="/lottiefiles/prepress.json"
-      :auto-play="true"
-      :loop="false"
-      :speed="prepressSpeed"
-      @AnimControl="setPrepressController"
-  />
+      autoplay
+      muted
+  ></video>
+  <!--  <LottieAnimation-->
+  <!--      ref="lottie"-->
+  <!--      class="lottie"-->
+  <!--      path="/lottiefiles/press.json"-->
+  <!--      :auto-play="true"-->
+  <!--      :loop="true"-->
+  <!--      :speed="showPrepress ? 0 : realSpeed"-->
+  <!--      @AnimControl="setFeetController"-->
+  <!--  />-->
+  <!--  <LottieAnimation-->
+  <!--      v-show="showPrepress"-->
+  <!--      ref="lottie"-->
+  <!--      class="lottie"-->
+  <!--      path="/lottiefiles/prepress.json"-->
+  <!--      :auto-play="true"-->
+  <!--      :loop="false"-->
+  <!--      :speed="prepressSpeed"-->
+  <!--      @AnimControl="setPrepressController"-->
+  <!--  />-->
 </template>
 
 <style>
