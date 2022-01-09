@@ -50,4 +50,7 @@ export default function setUpDashboard (socket, steps, { watch }) {
     socket.on('restart', () => {
         steps.goTo("start")
     })
+    socket.on('go step', (step) => {
+        steps.goTo(step)
+    })
 }

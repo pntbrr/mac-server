@@ -30,6 +30,9 @@ export default function () {
     const restart = () => {
         socket.emit('restart')
     }
+    const goStep = (step) => {
+        socket.emit('go step', step)
+    }
 
     return {
         socket,
@@ -40,6 +43,7 @@ export default function () {
         gaugeUp,
         gaugeDown,
         gaugeVal,
-        restart
+        restart,
+        goStep
     }
 }
