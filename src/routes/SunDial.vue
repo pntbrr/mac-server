@@ -17,11 +17,13 @@ const animLoaded = controller => {
   anim.value = controller
   setAnimController(controller)
 }
+let sundialTimeout = null
 store.$onAction(({name, after}) => {
   after(() => {
     if (name === 'playSundial') {
+      clearTimeout(sundialTimeout)
       anim.value.goToAndPlay(0)
-      setTimeout(() => anim.value.pause(), store.sundialAnim.duration * 1000)
+      sundialTimeout = setTimeout(() => anim.value.pause(), store.sundialAnim.duration * 1000)
     }
   })
 })
